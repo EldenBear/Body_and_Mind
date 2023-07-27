@@ -1,7 +1,7 @@
 // models/exercise.js
 
 const mongoose = require('mongoose');
-const axios = require('axios');
+
 
 // Define the schema for the "exercises" collection
 const exerciseSchema = new mongoose.Schema({
@@ -24,6 +24,5 @@ const exerciseSchema = new mongoose.Schema({
   });
 
 // Create a model based on the schema
-const Exercise = mongoose.model('Exercise', exerciseSchema);
 
-module.exports = Exercise;
+module.exports = exerciseSchema;

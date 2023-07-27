@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import Home from './pages/Home';
-import Matchup from './pages/Matchup';
-import Vote from './pages/Vote';
+import { ChakraProvider } from '@chakra-ui/react';
+import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 
 const client = new ApolloClient({
@@ -14,28 +13,20 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+      <ChakraProvider>
       <Router>
-        <div className="flex-column justify-center align-center min-100-vh bg-primary">
           <Routes>
             <Route 
               path="/" 
-              element={<Home />}
-            />
-            <Route 
-              path="/matchup" 
-              element={<Matchup />}
-            />
-            <Route 
-              path="/matchup/:id" 
-              element={<Vote />}
+              element={<HomePage />}
             />
             <Route 
               path="*"
               element={<NotFound />}
             />
           </Routes>
-        </div>
       </Router>
+      </ChakraProvider>
     </ApolloProvider>
   );
 }

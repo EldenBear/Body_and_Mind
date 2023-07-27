@@ -26,9 +26,9 @@ const WorkoutPage = () => {
             />{" "}
           </WrapItem>
           <p className="userName">John Smith</p>
-          <a href="#home">Home</a>
-          <a href="#profile">Profile</a>
-          <a href="#logout">Logout</a>
+          <a href="home">Home</a>
+          <a href="profile">Profile</a>
+          <a href="logout">Logout</a>
         </div>
         <Button
           size="md"

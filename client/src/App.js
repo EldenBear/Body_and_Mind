@@ -4,6 +4,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
+import WorkoutPage from './pages/WorkoutPage';
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -19,6 +20,10 @@ function App() {
             <Route 
               path="/" 
               element={<HomePage />}
+            />
+            <Route 
+              path="/workouts" 
+              element={<WorkoutPage/>}
             />
             <Route 
               path="*"

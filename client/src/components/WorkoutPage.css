@@ -1,0 +1,32 @@
+:root{
+    --primary: #d9f3f6;
+    --secondary: #f7f8ed;
+  }
+
+.main {
+    margin-left: 360px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: var(--secondary);
+  }
+
+html{
+    background-color: var(--secondary);
+}
+
+.workoutInfo{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inputBox{
+    background-color: white;
+}
+
+.searchIcon{
+    cursor: pointer;
+}

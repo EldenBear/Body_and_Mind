@@ -33,6 +33,7 @@ const HomePage = () => {
           </WrapItem>
           <p className="userName">John Smith</p>
           <a href="#clients">Profile</a>
+          <a href="workouts">Workouts</a>
           <a href="#contact">Logout</a>
         </div>
         <Button

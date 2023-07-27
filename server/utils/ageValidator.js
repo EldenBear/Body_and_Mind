@@ -1,1 +1,1 @@
-exports.ageValidation = (value) => value >= 18;
+exports.ageValidator = (value) => value >= 18;

@@ -31,6 +31,11 @@ Conclusion:
 ## Features
 
 ## Technologies
+Node.JS
+Express.js
+React
+WebToken - Authentication
+MongoDB
 
 ## Contributions
 

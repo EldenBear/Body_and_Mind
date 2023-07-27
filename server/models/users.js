@@ -20,11 +20,13 @@ const userSchema = new mongoose.Schema({
     },
     age: {
         type: Number,
-        Min: 18,
+        validate: {
+            validator: ageValidator,
+            message: 'Age must be 18 or older'
     },
     aboutme: {
-        type:String,
-        Min: 280,
+        type: String,
+        min: 280,
     },
     hobbies: {
         type: String,
@@ -41,6 +43,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['Sedentary', 'Active', 'Social Active', 'Very Active']
     },
+    comments: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Comment',
+        },
+      ],
 });
 
-const Users = mongoose.model('Users', userSchema)
+const Users = mongoose.model('Users', userSchema);
+
+module.exports = Users;

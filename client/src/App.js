@@ -5,6 +5,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
+import WorkoutPage from './pages/WorkoutPage';
+
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -22,6 +24,15 @@ function App() {
               element={<HomePage />}
             />
             <Route
+            <Route 
+              path="/home" 
+              element={<HomePage />}
+            />
+            <Route 
+              path="/workouts" 
+              element={<WorkoutPage/>}
+            />
+            <Route 
               path="*"
               element={<NotFound />}
             />

@@ -32,8 +32,9 @@ const HomePage = () => {
             />{" "}
           </WrapItem>
           <p className="userName">John Smith</p>
-          <a href="#clients">Profile</a>
-          <a href="#contact">Logout</a>
+          <a href="profile">Profile</a>
+          <a href="workouts">Workouts</a>
+          <a href="logout">Logout</a>
         </div>
         <Button
           size="md"

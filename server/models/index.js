@@ -1,4 +1,8 @@
-const Tech = require('./Tech');
-const Matchup = require('./Matchup');
+// Models/index.js
 
-module.exports = { Tech, Matchup };
+const mongoose = require ('mongoose');
+const users = require('./users');
+const exercise = require('./exercise');
+const comments = require('./comments')
+
+module.exports = { users, exercise, comments };

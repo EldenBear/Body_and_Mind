@@ -4,6 +4,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
+import Login from './pages/Login';
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -14,18 +15,19 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <ChakraProvider>
-      <Router>
+        <Router>
           <Routes>
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={<HomePage />}
             />
-            <Route 
+            <Route
               path="*"
               element={<NotFound />}
             />
+            <Route path="/login" element={<Login />} />
           </Routes>
-      </Router>
+        </Router>
       </ChakraProvider>
     </ApolloProvider>
   );

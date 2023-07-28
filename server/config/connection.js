@@ -17,15 +17,7 @@ mongoose.connect(databaseURI, {
     console.error('Error connecting to MongoDB:', error);
   });
 
-// Import models
-const Users = require('../models/users');
-const Comment = require('../models/comments');
-const Exercise = require('../models/exercise');
-
-
-// Export the models for use in other parts of your application
-module.exports = { Users, Comment, Exercise };
-
+  module.exports = mongoose.connection;
 
 
 

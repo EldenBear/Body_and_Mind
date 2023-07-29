@@ -21,10 +21,9 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<HomePage />}
+              element={< Login />}
             />
             <Route
-            <Route 
               path="/home" 
               element={<HomePage />}
             />
@@ -36,7 +35,6 @@ function App() {
               path="*"
               element={<NotFound />}
             />
-            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </ChakraProvider>

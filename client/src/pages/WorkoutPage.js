@@ -1,46 +1,18 @@
 import * as React from "react";
 import Workout from "../components/Workout";
+import Navigation from "../components/Navigation";
 import "../components/WorkoutPage.css";
 import {
-  Avatar,
-  Button,
   Input,
   InputGroup,
   InputRightElement,
-  WrapItem,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 
 const WorkoutPage = () => {
   return (
     <>
-      <div className="sidenav">
-        <h1 className="homeHeader">Body & Mind</h1>
-        <div>
-          <WrapItem>
-            <Avatar
-              size="2xl"
-              name="Segun Adebayo"
-              src="https://bit.ly/sage-adebayo"
-              className="avatarPhoto"
-            />{" "}
-          </WrapItem>
-          <p className="userName">John Smith</p>
-          <a href="home">Home</a>
-          <a href="profile">Profile</a>
-          <a href="logout">Logout</a>
-        </div>
-        <Button
-          size="md"
-          height="48px"
-          width="200px"
-          border="2px"
-          borderColor="green.500"
-        >
-          &#128149; Donate
-        </Button>
-      </div>
-
+    <Navigation></Navigation>
       <div className="main">
         <InputGroup className="inputBox">
           <Input type="tel" placeholder="Search for an exercise!" />

@@ -1,10 +1,9 @@
 import * as React from "react";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
+import Navigation from "../components/Navigation";
 import "../components/HomePage.css";
 import {
-  Avatar,
-  Button,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -12,7 +11,6 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  WrapItem,
 } from "@chakra-ui/react";
 
 const HomePage = () => {
@@ -20,33 +18,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div class="sidenav">
-        <h1 className="homeHeader">Body & Mind</h1>
-        <div>
-          <WrapItem>
-            <Avatar
-              size="2xl"
-              name="Segun Adebayo"
-              src="https://bit.ly/sage-adebayo"
-              className="avatarPhoto"
-            />{" "}
-          </WrapItem>
-          <p className="userName">John Smith</p>
-          <a href="profile">Profile</a>
-          <a href="workouts">Workouts</a>
-          <a href="logout">Logout</a>
-        </div>
-        <Button
-          size="md"
-          height="48px"
-          width="200px"
-          border="2px"
-          borderColor="green.500"
-        >
-          &#128149; Donate
-        </Button>
-      </div>
-
+     <Navigation></Navigation>
       <div className="main">
         <Post
           name="John Smith"

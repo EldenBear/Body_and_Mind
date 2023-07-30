@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-const ageValidator = require('../utils/ageValidator');
+const { ageValidator } = require('../utils/ageValidator');
 const commentSchema = require('./commentSchema');
 
 const userSchema = new Schema({

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(
+    'mongodb+srv://tg1489:RUBYruby2808!!@cluster0.hr6x6af.mongodb.net/bodyandmind'
+  )
   .then(() => {
     console.log('Connected to MongoDB database!');
   })

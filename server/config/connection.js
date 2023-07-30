@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 mongoose
-  .connect(
-    'mongodb+srv://tg1489:RUBYruby2808!!@cluster0.hr6x6af.mongodb.net/bodyandmind'
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB database!');
   })

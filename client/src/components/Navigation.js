@@ -4,13 +4,15 @@ import "../components/HomePage.css";
 import {
   Avatar,
   Button,
+  Link,
   WrapItem,
 } from "@chakra-ui/react";
+
 
 const Navigation = () => {
   return (
     <div class="sidenav">
-      <h1 className="homeHeader">Body & Mind</h1>
+      <h1 className="homeHeader"><a href="home">Body & Mind</a></h1>
       <div>
         <WrapItem>
           <Avatar
@@ -21,20 +23,15 @@ const Navigation = () => {
           />{" "}
         </WrapItem>
         <p className="userName">John Smith</p>
+        <a href="home">Home</a>
         <a href="profile">Profile</a>
         <a href="workouts">Workouts</a>
-        <a href="logout">Logout</a>
+        <a href="/">Logout</a>
       </div>
       <SupportModal></SupportModal>
-      <Button
-        size="md"
-        height="48px"
-        width="200px"
-        border="2px"
-        borderColor="green.500"
-      >
-        &#128149; Donate
-      </Button>
+
+      <Link href="https://www.heart.org/"> &#128149; Donate &#128149;</Link>
+
     </div>
   );
 };

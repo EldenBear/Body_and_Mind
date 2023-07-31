@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
@@ -13,18 +13,27 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const theme = extendTheme({
+  colors: {
+    secondary: {
+      50: "#f7f8ed",
+      100: "#f7f8ed",
+      500: "#f7f8ed",
+    }
+  }
+});
+
 function App() {
   return (
     <ApolloProvider client={client}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Router>
           <Routes>
             <Route
               path="/"
-              element={<HomePage />}
+              element={< Login />}
             />
             <Route
-            <Route 
               path="/home" 
               element={<HomePage />}
             />
@@ -36,7 +45,6 @@ function App() {
               path="*"
               element={<NotFound />}
             />
-            <Route path="/login" element={<Login />} />
           </Routes>
         </Router>
       </ChakraProvider>

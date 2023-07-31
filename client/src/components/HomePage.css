@@ -20,7 +20,11 @@
     padding-top: 34px;
     padding-bottom: 34px;
   }
-  
+
+  .supportButton:hover{
+    opacity: .5;
+  }
+ 
   .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;

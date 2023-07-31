@@ -5,6 +5,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import HomePage from './pages/HomePage';
 import NotFound from './pages/NotFound';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import WorkoutPage from './pages/WorkoutPage';
 
 
@@ -34,14 +35,18 @@ function App() {
               element={< Login />}
             />
             <Route
-              path="/home" 
+              path="/signup"
+              element={< Signup />}
+            />
+            <Route
+              path="/home"
               element={<HomePage />}
             />
-            <Route 
-              path="/workouts" 
-              element={<WorkoutPage/>}
+            <Route
+              path="/workouts"
+              element={<WorkoutPage />}
             />
-            <Route 
+            <Route
               path="*"
               element={<NotFound />}
             />

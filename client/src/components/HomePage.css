@@ -1,78 +1,85 @@
-:root{
+:root {
   --primary: #d9f3f6;
   --secondary: #f7f8ed;
 }
 
 .sidenav {
-    height: 100%;
-    width: 360px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: var(--primary);
-    overflow-x: hidden;
-    padding-top: 20px;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 34px;
-    padding-bottom: 34px;
-  }
+  height: 100%;
+  width: 360px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: var(--primary);
+  overflow-x: hidden;
+  padding-top: 20px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 34px;
+  padding-bottom: 34px;
+}
 
-  .supportButton:hover{
-    opacity: .5;
-  }
- 
-  .sidenav a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    text-align: center;
+.supportButton:hover {
+  opacity: .5;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.sidenav a:hover {
+  color: gold;
+}
+
+.main {
+  margin-left: 360px;
+  /* Same as the width of the sidenav */
+  font-size: 28px;
+  /* Increased text to enable scrolling */
+  padding: 0px 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: var(--secondary);
+}
+
+.homeHeader {
+  color: black;
+  font-size: 34px;
+  text-align: center;
+  font-family: 'Lugrasimo', cursive, sans-serif;
+}
+
+.userName {
+  color: black;
+  font-size: 28px;
+  text-align: center;
+  word-break: break-all;
+  margin-top: 12px;
+}
+
+.avatarPhoto {
+  margin: auto;
+
+}
+
+.commentDrawer {
+  background-color: var(--primary);
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
     padding-top: 15px;
   }
-  
-  .sidenav a:hover {
-    color: gold;
-  }
-  
-  .main {
-    margin-left: 360px; /* Same as the width of the sidenav */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: var(--secondary);
-  }
 
-  .homeHeader{
-    color: black;
-    font-size: 34px;
-    text-align: center;
-    font-family: 'Lugrasimo', cursive, sans-serif;
+  .sidenav a {
+    font-size: 18px;
   }
-
-  .userName{
-    color: black;
-    font-size: 28px;
-    text-align: center;
-    word-break: break-all;
-    margin-top: 12px;
-  }
-
-  .avatarPhoto{
-    margin: auto;
-
-  }
-
-  .commentDrawer{
-    background-color: var(--primary);
-  }
-  
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
+}

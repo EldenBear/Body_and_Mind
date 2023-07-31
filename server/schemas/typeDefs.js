@@ -18,7 +18,7 @@ const typeDefs = gql`
 
   type Comment {
     content: String!
-    createdAt: Date
+    createdAt: String
   }
 
   input BioInput {

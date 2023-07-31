@@ -1,1 +1,3 @@
-exports.ageValidator = (value) => value >= 18;
+// age validator
+module.exports = (value) => value >= 18;
+

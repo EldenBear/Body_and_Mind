@@ -1,22 +1,28 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_TECH = gql`
-  query tech {
-    tech {
+export const GET_ME = gql`
+  query me {
+    me {
       _id
       name
+      email
+      age
+      aboutme
+      hobbies
+      gender
+      profilePicture
+      activityLevel
+      comments {
+        content
+        createdAt
+      }
     }
   }
 `;
 
-export const QUERY_MATCHUPS = gql`
-  query matchups($_id: String) {
-    matchups(_id: $_id) {
-      _id
-      tech1
-      tech2
-      tech1_votes
-      tech2_votes
-    }
-  }
-`;
+// export const GET_SOME_DATA from server/schemas/typeDef.js
+// look like " export const GET_SOME_DATA = gql`
+    //   query getSomeOtherData {
+
+    // }
+// Note to self: Once server/schemas/typeDef.js is added on add some others based on what is commented

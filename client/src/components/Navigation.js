@@ -3,7 +3,6 @@ import SupportModal from "../components/SupportModal";
 import "../components/HomePage.css";
 import {
   Avatar,
-  Button,
   Link,
   WrapItem,
 } from "@chakra-ui/react";

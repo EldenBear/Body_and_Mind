@@ -22,19 +22,19 @@ const resolvers = {
         throw new Error('Failed to fetch exercises from the external API.');
     }
   },
-},
-  register: async (_, { name, email, password }) => {
-    try {
-      const newUser = User.create({ name, email, password });
-      //   const token = have to wait for token
-      //   return { newUser, token };
-    } catch (err) {
-      console.error(err);
-      throw new AuthenticationError();
-    }
-  },
 
-  Mutation: {},
+  Mutation: {
+    register: async (parent, { name, email, password }) => {
+        try {
+          const newUser = await User.create({ name, email, password });
+          //   const token = have to wait for token
+          //   return { newUser, token };
+        } catch (err) {
+          console.error(err);
+          throw new AuthenticationError();
+        }
+      },
+  },
 };
 
 module.exports = resolvers;

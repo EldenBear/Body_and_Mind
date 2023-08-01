@@ -21,6 +21,15 @@ const typeDefs = gql`
     createdAt: String
   }
 
+  type Post {
+    _id: ID!
+    title: String
+    description: String
+    image: String
+    user: [User]
+    comments: [Comment]
+  }
+
   type Exercise {
     name: String!
     type: String!
@@ -45,6 +54,8 @@ const typeDefs = gql`
 
   type Query {
     me: User
+    exercises: [Exercise]!
+
   }
 
   type Mutation {

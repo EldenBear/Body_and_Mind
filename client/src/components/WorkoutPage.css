@@ -30,3 +30,17 @@ html{
 .searchIcon{
     cursor: pointer;
 }
+
+@media screen and (max-width: 900px) {
+    .main{
+     margin-left: 0px;
+    }
+   
+     .sidenav {
+       padding-top: 15px;
+     }
+   
+     .sidenav a {
+       font-size: 18px;
+     }
+   }

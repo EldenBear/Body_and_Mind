@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import WorkoutPage from './pages/WorkoutPage';
+import ProfilePage from './pages/ProfilePage';
 
 
 const client = new ApolloClient({
@@ -41,6 +42,10 @@ function App() {
             <Route
               path="/home"
               element={<HomePage />}
+            />
+             <Route
+              path="/profile"
+              element={<ProfilePage />}
             />
             <Route
               path="/workouts"

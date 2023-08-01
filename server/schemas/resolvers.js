@@ -1,5 +1,6 @@
 const { User } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
+const { axios } = require('axios');
 // Need the sign token utility when finsihed
 
 const resolvers = {
@@ -12,6 +13,16 @@ const resolvers = {
       }
     },
   },
+    exercises: async () => {
+      try {
+        const response = await axios.get('https://api-ninjas.com/api/exercises');
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching exercises from the external API:', error);
+        throw new Error('Failed to fetch exercises from the external API.');
+    }
+  },
+},
   register: async (_, { name, email, password }) => {
     try {
       const newUser = User.create({ name, email, password });

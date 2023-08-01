@@ -2,3 +2,66 @@
     --primary: #d9f3f6;
     --secondary: #f7f8ed;
 }
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.login-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #f0f0f0;
+}
+
+.login-container {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-container form {
+    width: 100%;
+}
+
+.login-container .login-button,
+.login-container .signup-button {
+    width: 100%;
+}
+
+.login-container .signup-button {
+    margin-top: 10px;
+}
+
+.login-container label {
+    font-weight: bold;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.login-container a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+    .login-container {
+        max-width: 80%;
+    }
+}

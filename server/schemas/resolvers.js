@@ -1,6 +1,6 @@
 const { User } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
-const { axios } = require('axios');
+const { axios } = require('axios'); //Still need api token? 
 // Need the sign token utility when finsihed
 
 const resolvers = {

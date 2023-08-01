@@ -21,6 +21,15 @@ const typeDefs = gql`
     createdAt: String
   }
 
+  type Exercise {
+    name: String!
+    type: String!
+    muscle: String!
+    equipment: String!
+    difficulty: String!
+    instructions: String!
+  }
+
   input BioInput {
     aboutme: String
     hobbies: String

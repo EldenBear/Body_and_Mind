@@ -1,0 +1,79 @@
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.signup-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #f0f0f0;
+}
+
+.signup-container {
+    padding: 20px;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-container form {
+    width: 100%;
+}
+
+.signup-container .chakra-form-control {
+    margin-bottom: 1rem;
+}
+
+.signup-container .chakra-button {
+    width: 100%;
+}
+
+.signup-container .back-to-login-button {
+    margin-top: 10px;
+}
+
+.signup-container label {
+    font-weight: bold;
+}
+
+.signup-container input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.signup-container a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.signup-container a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .signup-container {
+        padding: 10px;
+    }
+
+    .signup-container .chakra-form-control {
+        margin-bottom: 0.5rem;
+    }
+
+    .signup-container .chakra-button {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .signup-container .back-to-login-button {
+        margin-top: 0.5rem;
+    }
+}

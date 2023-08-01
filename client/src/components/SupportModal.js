@@ -32,7 +32,6 @@ const SupportModal = () => {
               <b>Substance Abuse and Mental Health Services Administration Helpline:</b> 1-800-662-4357 <br />
               <b>The Trevor Project LGBTQ+:</b> 1-866-488-7386 <br />
               <b>National Domestic Violence Hotline:</b> 1-800-799-7233
-
             </p>
           </ModalBody>
           <ModalFooter>

@@ -14,11 +14,20 @@ import {
 } from "@chakra-ui/react";
 
 const HomePage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  React.useEffect( () => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 900);
+    }
+    window.addEventListener('resize', handleResize);
+  })
 
   return (
     <>
-     <Navigation></Navigation>
+     <Navigation isMobile={isMobile}></Navigation>
       <div className="main">
         <Post
           name="John Smith"

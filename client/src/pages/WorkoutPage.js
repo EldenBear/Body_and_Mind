@@ -10,9 +10,17 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 
 const WorkoutPage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+
+  React.useEffect( () => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 900);
+    }
+    window.addEventListener('resize', handleResize);
+  })
   return (
     <>
-    <Navigation></Navigation>
+    <Navigation isMobile={isMobile}></Navigation>
       <div className="main">
         <InputGroup className="inputBox">
           <Input type="tel" placeholder="Search for an exercise!" />

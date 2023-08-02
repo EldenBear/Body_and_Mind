@@ -131,7 +131,7 @@ const HomePage = () => {
         )
       })
     )
-  }
+  };
 
   return (
     <>

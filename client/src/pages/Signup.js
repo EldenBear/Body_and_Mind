@@ -44,14 +44,7 @@ const Signup = () => {
       'color: #bada55'
     );
 
-    // *** Password Pattern is causing form to not submit ***
-
-    // const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{6,})/;
-
-    // if (password !== passwordPattern) {
-    //   setError('Passwords do not match.');
-    //   return;
-    // }
+    // Moved password pattern to back end
 
     console.log('Form Submitted ' + '%c' + '(Before try{})', 'color: #bada55');
 

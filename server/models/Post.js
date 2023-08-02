@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const commentSchema = require('./commentSchema');
 
 const postSchema = new Schema({
     title: {
@@ -12,7 +13,7 @@ const postSchema = new Schema({
     image: {
       type: String,
     },
-
+    comments: [commentSchema],
 });
 
 const Post = model('Post', postSchema);

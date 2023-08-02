@@ -17,6 +17,7 @@ export const LOGIN_USER = gql`
     login(email: $email, password: $password) {
       token
     }
+  }
 `;
 
 // export const CREATE_MATCHUP = gql`

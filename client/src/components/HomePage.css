@@ -3,6 +3,10 @@
   --secondary: #f7f8ed;
 }
 
+#root{
+  background-color: var(--secondary);
+}
+
 .sidenav {
   height: 100%;
   width: 360px;
@@ -57,6 +61,13 @@
   font-family: 'Lugrasimo', cursive, sans-serif;
 }
 
+.addPostButton{
+  color: black !important;
+  z-index: 999;
+  right: 24px;
+  top: 24px;
+}
+
 .userName {
   color: black;
   font-size: 28px;
@@ -72,6 +83,15 @@
 
 .commentDrawer {
   background-color: var(--primary);
+}
+
+.commentInputField{
+  background-color: white !important;
+  margin-bottom: 10px;
+}
+
+.commentInputButton{
+  margin-bottom: 10px;
 }
 
 .mobileHeader{

@@ -40,6 +40,11 @@ const theme = extendTheme({
       100: '#f7f8ed',
       500: '#f7f8ed',
     },
+    primary: {
+      50: '#d9f3f6',
+      100: '#d9f3f6',
+      500: '#d9f3f6',
+    },
   },
 });
 

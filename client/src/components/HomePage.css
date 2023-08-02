@@ -3,7 +3,7 @@
   --secondary: #f7f8ed;
 }
 
-#root{
+#root {
   background-color: var(--secondary);
 }
 
@@ -61,7 +61,7 @@
   font-family: 'Lugrasimo', cursive, sans-serif;
 }
 
-.addPostButton{
+.addPostButton {
   color: black !important;
   z-index: 999;
   right: 24px;
@@ -85,40 +85,52 @@
   background-color: var(--primary);
 }
 
-.commentInputField{
+.commentInputField {
   background-color: white !important;
   margin-bottom: 10px;
 }
 
-.commentInputButton{
+.commentInputButton {
   margin-bottom: 10px;
 }
 
-.mobileHeader{
+.mobileHeader {
   display: inline-flex;
   justify-content: space-between;
   width: 100%;
   background: var(--primary);
 }
 
-.mobileHomeHeader{
+.mobileHomeHeader {
   font-family: 'Lugrasimo', cursive, sans-serif;
   font-size: 26px;
   color: #818181;
 }
 
-.mobileHomeHeader:hover{
+.mobileHomeHeader:hover {
   color: black;
 }
 
-menuItem{
+menuItem {
   width: 100%;
 }
 
+.blur-overlay {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
+
 @media screen and (max-width: 900px) {
- .main{
-  margin-left: 0px;
- }
+  .main {
+    margin-left: 0px;
+  }
 
   .sidenav {
     padding-top: 15px;

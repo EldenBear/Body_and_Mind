@@ -62,6 +62,11 @@ userSchema.pre('save', async function (next) {
   next(); // Used so that the password can fall through the pipeline and continue to get saved in the db
 });
 
+// Login password compare
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
 const User = model('User', userSchema);
 
 module.exports = User;

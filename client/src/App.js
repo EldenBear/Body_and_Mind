@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import WorkoutPage from './pages/WorkoutPage';
+import ProfilePage from './pages/ProfilePage';
 
 // Endpoint for GraphQL
 const httpLink = createHttpLink({
@@ -56,6 +57,7 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/home' element={<HomePage />} />
+            <Route path='/profile' element={ProfilePage />} />
             <Route path='/workouts' element={<WorkoutPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>

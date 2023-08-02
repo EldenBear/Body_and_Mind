@@ -74,7 +74,32 @@
   background-color: var(--primary);
 }
 
-@media screen and (max-height: 450px) {
+.mobileHeader{
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--primary);
+}
+
+.mobileHomeHeader{
+  font-family: 'Lugrasimo', cursive, sans-serif;
+  font-size: 26px;
+  color: #818181;
+}
+
+.mobileHomeHeader:hover{
+  color: black;
+}
+
+menuItem{
+  width: 100%;
+}
+
+@media screen and (max-width: 900px) {
+ .main{
+  margin-left: 0px;
+ }
+
   .sidenav {
     padding-top: 15px;
   }

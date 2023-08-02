@@ -10,9 +10,18 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 
 const WorkoutPage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+  const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
+
+  React.useEffect( () => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 900);
+    }
+    window.addEventListener('resize', handleResize);
+  })
   return (
     <>
-    <Navigation></Navigation>
+    <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
       <div className="main">
         <InputGroup className="inputBox">
           <Input type="tel" placeholder="Search for an exercise!" />

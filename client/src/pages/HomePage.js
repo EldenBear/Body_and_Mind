@@ -14,11 +14,21 @@ import {
 } from "@chakra-ui/react";
 
 const HomePage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+  const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  React.useEffect( () => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 900);
+    }
+    window.addEventListener('resize', handleResize);
+  });
 
   return (
     <>
-     <Navigation></Navigation>
+     <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
       <div className="main">
         <Post
           name="John Smith"

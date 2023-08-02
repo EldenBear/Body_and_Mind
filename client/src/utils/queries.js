@@ -4,8 +4,7 @@ export const GET_ME = gql`
   query me {
     me {
       _id
-      name
-      email
+      username
       age
       aboutme
       hobbies
@@ -22,7 +21,7 @@ export const GET_ME = gql`
 
 // export const GET_SOME_DATA from server/schemas/typeDef.js
 // look like " export const GET_SOME_DATA = gql`
-    //   query getSomeOtherData {
+//   query getSomeOtherData {
 
-    // }
+// }
 // Note to self: Once server/schemas/typeDef.js is added on add some others based on what is commented

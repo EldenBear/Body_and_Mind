@@ -1,50 +1,21 @@
 import { gql } from '@apollo/client';
 
 export const REGISTER_USER = gql`
-  mutation register($name: String!, $email: String!, $password: String!) {
-    register(name: $name, email: $email, password: $password) {
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password) {
       token
       user {
-        _id
-        name
-        email
-        age
-        aboutme
-        hobbies
-        gender
-        profilePicture
-        activityLevel
-        comments {
-            content
-          createdAt
-        }
+        username
+
       }
     }
   }
 `;
 
 export const LOGIN_USER = gql`
-
-`;
-
-export const ADD_BIO = gql`
-
-`;
-
-export const GET_POST = gql`
-
-`;
-
-export const GET_EXERCISES = gql`
-    mutations exercises {
-      exercises {
-        name
-        type
-        muscle
-        equipment
-        difficulty
-        instructions
-      }
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
     }
 `;
 

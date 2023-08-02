@@ -1,14 +1,13 @@
 [
   {
-    "name": "John Doe",
-    "email": "john@example.com",
+    "username": "John Doeeee",
     "password": "password123",
     "age": 25,
     "aboutme": "Hello, I'm John! Nice to meet you.",
     "hobbies": "Reading, hiking",
     "gender": "male",
     "profilePicture": "https://example.com/profiles/john.jpg",
-    "activityLevel": "Active",
+    "activityLevel": "active",
     "comments": [
       {
         "content": "Great post!"
@@ -19,14 +18,13 @@
     ]
   },
   {
-    "name": "Jane Smith",
-    "email": "jane@example.com",
+    "username": "Jane Smitheee",
     "password": "secret123",
     "age": 30,
     "aboutme": "Hi there! I'm Jane.",
     "gender": "female",
     "profilePicture": "https://example.com/profiles/jane.jpg",
-    "activityLevel": "Social Active",
+    "activityLevel": "active",
     "comments": [
       {
         "content": "Thanks for sharing!"

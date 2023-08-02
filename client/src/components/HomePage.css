@@ -85,6 +85,15 @@
   background-color: var(--primary);
 }
 
+.commentInputField{
+  background-color: white !important;
+  margin-bottom: 10px;
+}
+
+.commentInputButton{
+  margin-bottom: 10px;
+}
+
 .mobileHeader{
   display: inline-flex;
   justify-content: space-between;

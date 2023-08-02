@@ -31,10 +31,17 @@ const HomePage = () => {
       userTitle: "Developer",
       postText: "Sample text",
       imageURL: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+      comments:[ {
+        name: "John Smith",
+        userTitle: "Developer",
+        postText: "Text text etxtdfcsj"
+      }]
     }
   ]);
   const [addPostDesc, setAddPostDesc] = React.useState("");
   const [addPostImage, setAddPostImage] = React.useState("");
+  const [addPostComment, setAddPostComment] = React.useState("");
+  const [currentPost, setCurrentPost] = React.useState(0);
 
   const { isOpen, onOpen, onClose, firstField, } = useDisclosure();
   const commentDrawer = "comment";
@@ -48,8 +55,11 @@ const HomePage = () => {
     window.addEventListener('resize', handleResize);
   });
 
-  function openDrawer(drawer) {
+  function openDrawer(drawer, postId) {
     setCurrentDrawer(drawer);
+    if (drawer === commentDrawer) {
+      setCurrentPost(postId);
+    } 
     onOpen();
   };
 
@@ -61,9 +71,13 @@ const HomePage = () => {
     setAddPostImage(e.target.value)
   };
 
+  function onChangeComment(e) {
+    setAddPostComment(e.target.value)
+  };
+
   function onSubmit() {
     const newPost = {
-      id: 1,
+      id: posts.length + 1,
       name: "John Smith",
       userTitle: "Developer",
       postText: addPostDesc,
@@ -71,6 +85,18 @@ const HomePage = () => {
     };
     setPosts([...posts, newPost]);
     onClose()
+  };
+
+  function onSubmitComment() {
+    const newComment = {
+      name: "John Smith",
+      userTitle: "Developer",
+      postText: addPostComment
+    };
+    const post = posts.filter(x => x.id === currentPost);
+    const newArray = posts.filter(x => x.id !== currentPost);
+    post[0].comments.push(newComment);
+    setPosts([...newArray, ...post]);
   };
 
   const renderPosts = () => {
@@ -82,8 +108,26 @@ const HomePage = () => {
           userTitle={post.userTitle}
           imageURL={post.imageURL}
           postText={post.postText}
-          onClickComment={() => openDrawer(commentDrawer)}
+          onClickComment={() => openDrawer(commentDrawer, post.id)}
         ></Post>
+        )
+      })
+    )
+  };
+
+  const renderComments = () => {
+    const post = posts.filter(x => x.id === currentPost);
+    if (post.length !== 1) {
+      return  
+    }
+    return (
+      post[0].comments.map(comment => {
+        return (
+          <Comment
+              name={comment.name}
+              userTitle={comment.userTitle}
+              postText={comment.postText}
+            ></Comment>
         )
       })
     )
@@ -102,51 +146,9 @@ const HomePage = () => {
           <DrawerCloseButton />
           <DrawerHeader className="commentDrawer">Comments</DrawerHeader>
           <DrawerBody className="commentDrawer">
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
-            <Comment
-              name="John Smith"
-              userTitle="Web Developer"
-              postText="Sample post text goes here"
-            ></Comment>
+          <Textarea placeholder='Comment' className="commentInputField" onChange={onChangeComment} />
+          <Button colorScheme='blue' className="commentInputButton" onClick={onSubmitComment}>Submit</Button>
+            {renderComments()}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

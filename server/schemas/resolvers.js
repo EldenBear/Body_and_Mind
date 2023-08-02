@@ -34,10 +34,26 @@ const resolvers = {
       try {
         const newUser = await User.create({ username, password });
         const token = signToken(newUser);
-        return { newUser, token };
+        return { user: newUser, token };
+      } catch (err) {
+        console.error('Error during user registration:', err);
+        throw new AuthenticationError('Registration failed inside resolvers');
+      }
+    },
+    login: async (parent, { username, password }) => {
+      try {
+        const user = await User.findOne({ username });
+
+        if (!user || !(await user.isCorrectPassword(password))) {
+          throw new AuthenticationError('Incorrect credentials');
+        }
+
+        const token = signToken(user);
+
+        return { token, user }; // Return back to the Client side
       } catch (err) {
         console.error(err);
-        throw new AuthenticationError('Registration failed inside resolvers');
+        throw new AuthenticationError('An error occurred during login');
       }
     },
   },

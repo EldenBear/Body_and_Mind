@@ -15,38 +15,54 @@ const Signup = () => {
   // GraphQL useMutation invocation
   const [register] = useMutation(REGISTER_USER);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    console.log('Input change:', name, value);
+
+    switch (name) {
+      case 'username':
+        setUsername(value);
+        break;
+      case 'password':
+        setPassword(value);
+        break;
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   //   Made async because we are talking to the database
   const handleSubmit = async (e) => {
-    console.log('Form Submitted.');
+    console.log('Form Submitted ' + '%c' + '(Beginning)', 'color: #bada55');
     e.preventDefault();
 
-    const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{6,})/;
+    console.log(
+      'Form Submitted ' + '%c' + '(After preventDefault())',
+      'color: #bada55'
+    );
 
-    if (!passwordPattern.test(password)) {
-      setError(
-        'Password must be at least 6 characters long and contain at least one capital letter and one special character.'
-      );
-      return;
-    }
+    // *** Password Pattern is causing form to not submit ***
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
+    // const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{6,})/;
+
+    // if (password !== passwordPattern) {
+    //   setError('Passwords do not match.');
+    //   return;
+    // }
+
+    console.log('Form Submitted ' + '%c' + '(Before try{})', 'color: #bada55');
 
     // Talking with GraphQL before registering
     try {
       const { data } = await register({
         variables: { username: username, password: password },
       });
-
-      if (data && data.register && data.register.token) {
-        const { token } = data.register;
-        Auth.login(token);
-      } else {
-        // If token doesn't exist
-        setError('Registration failed. Please try again.');
-      }
+      const { token } = data.register;
+      console.log('%c' + data, 'color: #bada55');
+      Auth.login(token);
     } catch (err) {
       console.error(err);
       setError('Error occurred during registration');
@@ -60,6 +76,7 @@ const Signup = () => {
     setPassword('');
     setConfirmPassword('');
     setError('');
+    console.log('Form Submitted ' + '%c' + '(End)', 'color: #bada55');
   };
 
   return (
@@ -85,25 +102,28 @@ const Signup = () => {
             <FormControl id='email' mb={4}>
               <FormLabel>Username</FormLabel>
               <Input
-                type='username'
+                type='text'
+                name='username'
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={handleInputChange}
               />
             </FormControl>
             <FormControl id='password' mb={4}>
               <FormLabel>Password</FormLabel>
               <Input
                 type='password'
+                name='password'
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleInputChange}
               />
             </FormControl>
             <FormControl id='confirmPassword' mb={4}>
               <FormLabel>Confirm Password</FormLabel>
               <Input
                 type='password'
+                name='confirmPassword'
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={handleInputChange}
               />
             </FormControl>
             <Button type='submit' colorScheme='green'>

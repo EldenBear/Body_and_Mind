@@ -46,14 +46,13 @@ const Navigation = (props) => {
     return (
       <div class="sidenav">
         <h1 className="homeHeader">
-          <a href="home">Body & Mind</a>
+          <a href="home">Body and Mind</a>
         </h1>
         <div>
           <WrapItem>
             <Avatar
               size="2xl"
-              name="Segun Adebayo"
-              src="https://bit.ly/sage-adebayo"
+              src={props.avatarURL}
               className="avatarPhoto"
             />{" "}
           </WrapItem>

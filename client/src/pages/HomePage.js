@@ -15,6 +15,7 @@ import {
 
 const HomePage = () => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+  const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -23,11 +24,11 @@ const HomePage = () => {
       setIsMobile(window.innerWidth < 900);
     }
     window.addEventListener('resize', handleResize);
-  })
+  });
 
   return (
     <>
-     <Navigation isMobile={isMobile}></Navigation>
+     <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
       <div className="main">
         <Post
           name="John Smith"

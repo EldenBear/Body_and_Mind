@@ -50,6 +50,15 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
 
+  const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+  if (!passwordPattern.test(this.password)) {
+    return next(
+      new Error(
+        'Password must be at least 8 characters long and contain at least one capital letter and one special character.'
+      )
+    );
+  }
+
   next(); // Used so that the password can fall through the pipeline and continue to get saved in the db
 });
 

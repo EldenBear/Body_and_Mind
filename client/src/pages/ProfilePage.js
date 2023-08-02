@@ -15,10 +15,19 @@
 
 
  const ProfilePage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    React.useEffect( () => {
+      function handleResize() {
+        setIsMobile(window.innerWidth < 1000);
+      }
+      window.addEventListener('resize', handleResize);
+    });
+
     return (
         <>
-        <ProfileNav></ProfileNav>
+        <ProfileNav isMobile={isMobile}></ProfileNav>
         <div className="profileMain">
         <Post
           name="John Smith"

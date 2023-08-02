@@ -26,7 +26,7 @@ const ProfilePicModal = (props) => {
   };
   return (
     <>
-      <Button onClick={onOpen} colorScheme="secondary" color="black" className="supportButton">Edit Avatar</Button>
+      <Button onClick={onOpen} colorScheme="secondary" color="black" className="editAvatarButton">Edit Avatar</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

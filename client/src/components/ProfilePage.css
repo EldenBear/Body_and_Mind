@@ -21,6 +21,14 @@
     padding-bottom: 34px;
   }
 
+  .profileHomeHeader{
+    color: black;
+    font-size: 34px;
+    text-align: center;
+    font-family: 'Lugrasimo', cursive, sans-serif;
+    margin-bottom: 25px;
+  }
+
   .supportButton:hover {
     opacity: .5;
   }
@@ -107,4 +115,40 @@
   .editButtons{
     float: right;
     margin-top: 10px;
+  }
+
+  .editAvatarButton:hover{
+    opacity: .5;
+  }
+
+  .mobileProfileBody{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: var(--primary);
+  }
+
+  .mobileProfileInfo{
+    width: 100%;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .profileMain{
+     margin-left: 0px;
+    }
+
+    .editAvatarButton{
+      margin-bottom: 10px;
+    }
+
+    .editButtons{
+      float: none;
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+
+    .profilePicDiv{
+      width: 100%;
+    }
   }

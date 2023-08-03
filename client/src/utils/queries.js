@@ -19,6 +19,26 @@ export const GET_ME = gql`
   }
 `;
 
+//get all comments
+export const GET_ALL_COMMENTS = gql`
+  query getAllComments {
+    comments {
+      content
+      createdAt
+    }
+  }
+`;
+
+//get comments by userId
+export const GET_COMMENTS_BY_USER_ID = gql`
+  query getCommentsByUserId($userId: ID!) {
+    commentsByUser(userId: $userId) {
+      content
+      createdAt
+    }
+  }
+`;
+
 // export const GET_SOME_DATA from server/schemas/typeDef.js
 // look like " export const GET_SOME_DATA = gql`
 //   query getSomeOtherData {

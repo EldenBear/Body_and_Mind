@@ -61,6 +61,17 @@ const typeDefs = gql`
     login(username: String!, password: String!): AuthPayload
     addBio(userId: ID!, bio: BioInput!): User
   }
+
+  type Query {
+    me: User
+    comments: [Comment]
+  } 
+
+  type Query {
+    me: User
+    comments: [Comment]
+    commentsByUser(userId: ID!): [Comment]
+  }
 `;
 
 module.exports = typeDefs;

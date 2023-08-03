@@ -9,50 +9,72 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 
+
 const WorkoutPage = () => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
   const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
+  const [workouts, setWorkouts] = React.useState([]);
+  const [search, setSearch] = React.useState("");
 
   React.useEffect( () => {
     function handleResize() {
       setIsMobile(window.innerWidth < 900);
     }
     window.addEventListener('resize', handleResize);
-  })
+  });
+
+    async function getworkouts (muscle){
+      const response = await fetch("https://api.api-ninjas.com/v1/exercises?muscle=" + muscle, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'X-Api-Key': process.env.REACT_APP_API_KEY,
+        },
+      });
+      const result = await response.json();
+      setWorkouts(result);
+    }
+    function onSearchWorkouts(){
+      getworkouts(search);
+    }
+
+    function workoutSearch(e) {
+      setSearch(e.target.value)
+    };
+
+    const renderWorkouts = () => {
+      if (workouts.length === 0 ) {
+        return (
+          <div>
+            No results found!
+          </div>
+        )
+      }
+      return workouts.map(workout => {
+        return(
+          <Workout
+          name= {workout.name}
+          type= {workout.type}
+          muscle= {workout.muscle}
+          equipment= {workout.equipment}
+          difficulty= {workout.difficulty}
+          instructions= {workout.instructions}
+        ></Workout>
+        )
+      })
+    }
+
   return (
     <>
     <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
       <div className="main">
         <InputGroup className="inputBox">
-          <Input type="tel" placeholder="Search for an exercise!" />
+          <Input type="tel" placeholder="Search for an exercise!" onChange={workoutSearch}/>
           <InputRightElement>
-            <SearchIcon color="gray.300" className="searchIcon"/>
+            <SearchIcon color="gray.300" className="searchIcon" onClick={onSearchWorkouts}/>
           </InputRightElement>
         </InputGroup>
-        <Workout
-          name="Incline Hammer Curls"
-          type="strength"
-          muscle="biceps"
-          equipment="dumbbell"
-          difficulty="beginner"
-          instructions="Seat yourself on an incline bench with a dumbbell in each hand. You should pressed firmly against he back with your feet together. Allow the dumbbells to hang straight down at your side, holding them with a neutral grip. This will be your starting position. Initiate the movement by flexing at the elbow, attempting to keep the upper arm stationary. Continue to the top of the movement and pause, then slowly return to the start position."
-        ></Workout>
-        <Workout
-          name="Incline Hammer Curls"
-          type="strength"
-          muscle="biceps"
-          equipment="dumbbell"
-          difficulty="beginner"
-          instructions="Seat yourself on an incline bench with a dumbbell in each hand. You should pressed firmly against he back with your feet together. Allow the dumbbells to hang straight down at your side, holding them with a neutral grip. This will be your starting position. Initiate the movement by flexing at the elbow, attempting to keep the upper arm stationary. Continue to the top of the movement and pause, then slowly return to the start position."
-        ></Workout>
-        <Workout
-          name="Incline Hammer Curls"
-          type="strength"
-          muscle="biceps"
-          equipment="dumbbell"
-          difficulty="beginner"
-          instructions="Seat yourself on an incline bench with a dumbbell in each hand. You should pressed firmly against he back with your feet together. Allow the dumbbells to hang straight down at your side, holding them with a neutral grip. This will be your starting position. Initiate the movement by flexing at the elbow, attempting to keep the upper arm stationary. Continue to the top of the movement and pause, then slowly return to the start position."
-        ></Workout>
+        {renderWorkouts()}
       </div>
     </>
   );

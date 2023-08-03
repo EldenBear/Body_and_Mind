@@ -33,15 +33,13 @@ export const ADD_BIO = gql`
   }
 `;
 
-//adding comment
-// export const ADD_COMMENT = gql`
-//   mutation AddComment($content: String!, $postId: ID!) {
-//     addComment(content: $content, postId: $postId) {
-//       content
-//       createdAt
-//     }
-//   }
-// `;
+export const ADD_COMMENT = gql`
+  mutation AddComment($comment: CommentInput) {
+    addComment(comment: $comment) {
+      content
+    }
+  }
+`;
 
 //adding post
 // export const ADD_POST = gql`

@@ -1,10 +1,11 @@
-import * as React from "react";
-import Post from "../components/Post";
-import Comment from "../components/Comment";
-import Navigation from "../components/Navigation";
-import { useQuery } from '@apollo/client';
+import * as React from 'react';
+import Post from '../components/Post';
+import Comment from '../components/Comment';
+import Navigation from '../components/Navigation';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
-import "../components/HomePage.css";
+import { ADD_COMMENT } from '../utils/mutations';
+import '../components/HomePage.css';
 import {
   Box,
   Button,
@@ -20,47 +21,53 @@ import {
   InputGroup,
   Textarea,
   useDisclosure,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 const HomePage = () => {
   const { loading, data } = useQuery(GET_ME);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
-  const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
+  const [avatarURL, setAvatarURL] = React.useState(
+    'https://bit.ly/broken-link'
+  );
   const [currentDrawer, setCurrentDrawer] = React.useState(null);
   const [posts, setPosts] = React.useState([
     {
       id: 1,
-      name: "John Smith",
-      userTitle: "Developer",
-      postText: "Sample text",
-      imageURL: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-      comments:[ {
-        name: "John Smith",
-        userTitle: "Developer",
-        postText: "Text text etxtdfcsj"
-      }]
-    }
+      name: 'John Smith',
+      userTitle: 'Developer',
+      postText: 'Sample text',
+      imageURL:
+        'https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
+      comments: [
+        {
+          name: 'John Smith',
+          userTitle: 'Developer',
+          postText: 'Text text etxtdfcsj',
+        },
+      ],
+    },
   ]);
-  const [addPostDesc, setAddPostDesc] = React.useState("");
-  const [addPostImage, setAddPostImage] = React.useState("");
-  const [addPostComment, setAddPostComment] = React.useState("");
+  const [addPostDesc, setAddPostDesc] = React.useState('');
+  const [addPostImage, setAddPostImage] = React.useState('');
+  const [addPostComment, setAddPostComment] = React.useState('');
   const [currentPost, setCurrentPost] = React.useState(0);
 
-  const { isOpen, onOpen, onClose, firstField, } = useDisclosure();
-  const commentDrawer = "comment";
-  const postDrawer = "post";
+  const { isOpen, onOpen, onClose, firstField } = useDisclosure();
+  const commentDrawer = 'comment';
+  const postDrawer = 'post';
 
-  React.useEffect( () => {
+  const [addComment] = useMutation(ADD_COMMENT);
+
+  React.useEffect(() => {
     if (loading) {
-      return
+      return;
     }
     if (data?.me === undefined) {
-      window.location.href = "/";
+      window.location.href = '/';
     }
-  },[loading, data?.me])
+  }, [loading, data?.me]);
 
-
-  React.useEffect( () => {
+  React.useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth < 900);
     }
@@ -71,21 +78,21 @@ const HomePage = () => {
     setCurrentDrawer(drawer);
     if (drawer === commentDrawer) {
       setCurrentPost(postId);
-    } 
+    }
     onOpen();
-  };
+  }
 
   function onChangePostDesc(e) {
-    setAddPostDesc(e.target.value)
-  };
+    setAddPostDesc(e.target.value);
+  }
 
   function onChangePostImage(e) {
-    setAddPostImage(e.target.value)
-  };
+    setAddPostImage(e.target.value);
+  }
 
   function onChangeComment(e) {
-    setAddPostComment(e.target.value)
-  };
+    setAddPostComment(e.target.value);
+  }
 
   function onSubmit() {
     const newPost = {
@@ -96,104 +103,140 @@ const HomePage = () => {
       imageURL: addPostImage,
     };
     setPosts([...posts, newPost]);
-    onClose()
-  };
+    onClose();
+  }
 
-  function onSubmitComment() {
+  async function onSubmitComment() {
     const newComment = {
-      name: data.me.username,
-      userTitle: data.me.activityLevel,
-      postText: addPostComment
+      name: 'Fake User',
+      userTitle: 'Shithead',
+      postText: addPostComment,
     };
-    const post = posts.filter(x => x.id === currentPost);
-    const newArray = posts.filter(x => x.id !== currentPost);
+
+    const { data } = await addComment({
+      variables: {
+        comment: {
+          content: addPostComment,
+        },
+      },
+    });
+
+    console.log(`data: ${JSON.stringify(data)}`);
+
+    const post = posts.filter((x) => x.id === currentPost);
+    const newArray = posts.filter((x) => x.id !== currentPost);
     post[0].comments.push(newComment);
     setPosts([...newArray, ...post]);
-  };
+  }
 
   const renderPosts = () => {
-    return (
-      posts.map(post => {
-        return (
-          <Post
+    return posts.map((post) => {
+      return (
+        <Post
           name={post.name}
           userTitle={post.userTitle}
           imageURL={post.imageURL}
           postText={post.postText}
           onClickComment={() => openDrawer(commentDrawer, post.id)}
         ></Post>
-        )
-      })
-    )
+      );
+    });
   };
 
   const renderComments = () => {
-    const post = posts.filter(x => x.id === currentPost);
+    const post = posts.filter((x) => x.id === currentPost);
     if (post.length !== 1) {
-      return  
+      return;
     }
-    return (
-      post[0].comments.map(comment => {
-        return (
-          <Comment
-              name={comment.name}
-              userTitle={comment.userTitle}
-              postText={comment.postText}
-            ></Comment>
-        )
-      })
-    )
+    return post[0].comments.map((comment) => {
+      return (
+        <Comment
+          name={comment.name}
+          userTitle={comment.userTitle}
+          postText={comment.postText}
+        ></Comment>
+      );
+    });
   };
 
   return (
     <>
-    <Button className="addPostButton" position={"fixed"} colorScheme="primary" onClick={() => openDrawer(postDrawer)}>+ Add Post</Button>
-     <Navigation isMobile={isMobile} avatarURL={avatarURL} loading={loading} data={data}></Navigation>
-      <div className="main">
-       {renderPosts()}
-      </div>
-      <Drawer onClose={onClose} isOpen={isOpen && currentDrawer === commentDrawer} size={"lg"}>
+      <Button
+        className='addPostButton'
+        position={'fixed'}
+        colorScheme='primary'
+        onClick={() => openDrawer(postDrawer)}
+      >
+        + Add Post
+      </Button>
+      <Navigation
+        isMobile={isMobile}
+        avatarURL={avatarURL}
+        loading={loading}
+        data={data}
+      ></Navigation>
+      <div className='main'>{renderPosts()}</div>
+      <Drawer
+        onClose={onClose}
+        isOpen={isOpen && currentDrawer === commentDrawer}
+        size={'lg'}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader className="commentDrawer">Comments</DrawerHeader>
-          <DrawerBody className="commentDrawer">
-          <Textarea placeholder='Comment' className="commentInputField" onChange={onChangeComment} />
-          <Button colorScheme='blue' className="commentInputButton" onClick={onSubmitComment}>Submit</Button>
+          <DrawerHeader className='commentDrawer'>Comments</DrawerHeader>
+          <DrawerBody className='commentDrawer'>
+            <Textarea
+              placeholder='Comment'
+              className='commentInputField'
+              onChange={onChangeComment}
+            />
+            <Button
+              colorScheme='blue'
+              className='commentInputButton'
+              onClick={onSubmitComment}
+            >
+              Submit
+            </Button>
             {renderComments()}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
 
-      <Drawer isOpen={isOpen && currentDrawer === postDrawer} placement='right' initialFocusRef={firstField}  onClose={onClose} >
+      <Drawer
+        isOpen={isOpen && currentDrawer === postDrawer}
+        placement='right'
+        initialFocusRef={firstField}
+        onClose={onClose}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth='1px'>
-            Create a new post
-          </DrawerHeader>
+          <DrawerHeader borderBottomWidth='1px'>Create a new post</DrawerHeader>
           <DrawerBody>
-              <Box>
-                <FormLabel htmlFor='desc'>Description</FormLabel>
-                <Textarea id='desc' onChange={onChangePostDesc} />
-              </Box>
-              <Box>
-                <FormLabel htmlFor='url'>Image URL</FormLabel>
-                <InputGroup>
-                  <Input
-                    onChange={onChangePostImage}
-                    type='url'
-                    id='url'
-                    placeholder='Please enter image url for post'
-                  />
-                </InputGroup>
-              </Box>
+            <Box>
+              <FormLabel htmlFor='desc'>Description</FormLabel>
+              <Textarea id='desc' onChange={onChangePostDesc} />
+            </Box>
+            <Box>
+              <FormLabel htmlFor='url'>Image URL</FormLabel>
+              <InputGroup>
+                <Input
+                  onChange={onChangePostImage}
+                  type='url'
+                  id='url'
+                  placeholder='Please enter image url for post'
+                />
+              </InputGroup>
+            </Box>
           </DrawerBody>
           <DrawerFooter borderTopWidth='1px'>
             <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme='blue' onClick={onSubmit}>Submit</Button>
+            <Button colorScheme='blue' onClick={onSubmit}>
+              Submit
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

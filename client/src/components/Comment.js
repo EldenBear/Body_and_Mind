@@ -14,6 +14,9 @@ import {
 } from "@chakra-ui/react";
 
 const Comment = (props) => {
+  function onClickUserName() {
+    window.location.href = `/profile/${props.name}`;
+  }
   return (
     <Card maxW="md" className="post">
       <CardHeader>
@@ -22,7 +25,7 @@ const Comment = (props) => {
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
 
             <Box>
-              <Heading size="md">{props.name}</Heading>
+              <Heading size="md" onClick={onClickUserName} className="userTitle">{props.name}</Heading>
               <Text fontSize="sm">{props.userTitle}</Text>
             </Box>
           </Flex>

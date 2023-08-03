@@ -4,6 +4,7 @@ import { GET_ME } from '../utils/queries';
 import { ADD_BIO } from '../utils/mutations';
 import SupportModal from './SupportModal';
 import ProfilePicModal from './ProfilePicModal';
+import { QUERY_USER } from '../utils/queries';
 import Auth from '../utils/auth';
 import '../components/ProfilePage.css';
 import {
@@ -38,43 +39,34 @@ import {
   HamburgerIcon,
 } from '@chakra-ui/icons';
 
-/* To-Do
-
-1.) Display username from `me` (x)
-2.) Display about me (x)
-3.) Display gender (x)
-4.) Display age (x)
-5.) Display activity level (x)
-6.) Display hobbies (x)
-7.) Display picture (x)
-
-8.) Edit username (x)
-9.) Edit about-me (x)
-10.) Edit gender (x)
-11.) Edit age (x)
-12.) Edit activity level (x)
-13.) Edit hobbies (x)
-14.) Edit picture (x)
-
-
-*/
 
 const ProfileNav = (props) => {
   const [isInEditMode, setIsInEditMode] = React.useState(false);
   const [gender, setGender] = React.useState('Male');
   const [activity, setActivity] = React.useState('Active');
-  const { loading, data } = useQuery(GET_ME);
+  const [isReadOnly, setIsReadOnly] = React.useState(true);
+  const meData = useQuery(GET_ME);
 
   const [addBio] = useMutation(ADD_BIO, {
-    refetchQueries: [{ query: GET_ME }],
-    onCompleted: (data) => {
-      console.log('%c' + 'Data: ', 'color: #bada55' + data);
-    },
+    refetchQueries: [{ query: QUERY_USER }],
   });
+
+  const { loading, data } = useQuery(QUERY_USER, {
+    // pass URL parameter
+    variables: { username: props.username },
+  });
+
+  React.useEffect(() => {
+    if (loading || meData === undefined) {
+      return;
+    }
+    if (meData?.data.me.username === data?.user.username ) {
+      setIsReadOnly(false);
+    }
+  },[ loading, meData, data])
 
   async function onSelectGender(event) {
     const newGender = event.target.value;
-    console.log('Gender: ' + '%c' + newGender, 'color: #bada55');
 
     try {
       const { data } = await addBio({
@@ -94,7 +86,6 @@ const ProfileNav = (props) => {
 
   async function onSelectActivity(event) {
     const newActivity = event.target.value;
-    console.log('Activity Level: ' + '%c' + newActivity, 'color: #bada55');
 
     try {
       const { data } = await addBio({
@@ -168,7 +159,7 @@ const ProfileNav = (props) => {
                 Username
               </Heading>
               <Text pt='2' fontSize='sm'>
-                {data && data.me && data.me.username}
+                {data && data.user && data.user.username}
               </Text>
               <Editable
                 textAlign='center'
@@ -177,7 +168,6 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 name='username'
                 onSubmit={async (newValue) => {
-                  console.log('Username: ' + '%c' + newValue, 'color: #bada55');
 
                   try {
                     const { data } = await addBio({
@@ -209,7 +199,6 @@ const ProfileNav = (props) => {
                 className='aboutMe'
                 name='aboutme'
                 onSubmit={async (newValue) => {
-                  console.log('About Me: ' + '%c' + newValue, 'color: #bada55');
 
                   try {
                     const { data } = await addBio({
@@ -224,7 +213,7 @@ const ProfileNav = (props) => {
                   }
                 }}
               >
-                {data && data.me && data.me.aboutme}
+                {data && data.user && data.user.aboutme}
                 {/* <EditablePreview className='aboutMePadding' /> */}
                 <EditableTextarea className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
@@ -246,8 +235,8 @@ const ProfileNav = (props) => {
                   <option value='Prefer not to say'>Prefer not to say</option>
                 </Select>
               )}
-              {!isInEditMode && data && data.me && data.me.gender && (
-                <span>{data.me.gender}</span>
+              {!isInEditMode && data && data.user && data.user.gender && (
+                <span>{data.user.gender}</span>
               )}
             </Box>
             <Box>
@@ -262,7 +251,6 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 onSubmit={async (newValue) => {
-                  console.log('Age: ' + '%c' + newValue, 'color: #bada55');
 
                   try {
                     const { data } = await addBio({
@@ -277,7 +265,7 @@ const ProfileNav = (props) => {
                   }
                 }}
               >
-                {data && data.me && data.me.age}
+                {data && data.user && data.user.age}
                 {/* <EditablePreview className='aboutMePadding' /> */}
                 <EditableInput className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
@@ -299,8 +287,8 @@ const ProfileNav = (props) => {
                   <option value='Very Active'>Very Active</option>
                 </Select>
               )}
-              {!isInEditMode && data && data.me && data.me.activityLevel && (
-                <span>{data.me.activityLevel}</span>
+              {!isInEditMode && data && data.user && data.user.activityLevel && (
+                <span>{data.user.activityLevel}</span>
               )}
             </Box>
             <Box>
@@ -315,7 +303,6 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 onSubmit={async (newValue) => {
-                  console.log('Hobbies: ' + '%c' + newValue, 'color: #bada55');
 
                   try {
                     const { data } = await addBio({
@@ -330,7 +317,7 @@ const ProfileNav = (props) => {
                   }
                 }}
               >
-                {data && data.me && data.me.hobbies}
+                {data && data.user && data.user.hobbies}
                 {/* <EditablePreview className='aboutMePadding' /> */}
                 <EditableTextarea className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
@@ -392,7 +379,7 @@ const ProfileNav = (props) => {
                 Save Changes
               </Button>
             )}
-            {!isInEditMode && (
+            {!isInEditMode && !isReadOnly && (
               <Button
                 colorScheme='blue'
                 className='editButtons'
@@ -405,7 +392,7 @@ const ProfileNav = (props) => {
               <WrapItem>
                 <Avatar
                   size='2xl'
-                  src={data && data.me && data.me.profilePicture}
+                  src={data && data.user && data.user.profilePicture}
                   className='profileAvatarPhoto'
                 />{' '}
               </WrapItem>
@@ -427,7 +414,7 @@ const ProfileNav = (props) => {
               <WrapItem>
                 <Avatar
                   size='2xl'
-                  src={data && data.me && data.me.profilePicture}
+                  src={data && data.user && data.user.profilePicture}
                   className='profileAvatarPhoto'
                 />{' '}
               </WrapItem>
@@ -448,7 +435,7 @@ const ProfileNav = (props) => {
                   Save Changes
                 </Button>
               )}
-              {!isInEditMode && (
+              {!isInEditMode && !isReadOnly && (
                 <Button
                   colorScheme='blue'
                   className='editButtons'

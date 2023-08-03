@@ -23,7 +23,6 @@ export const LOGIN_USER = gql`
 export const ADD_BIO = gql`
   mutation AddBio($userId: ID!, $bio: BioInput!) {
     addBio(userId: $userId, bio: $bio) {
-      _id
       username
       age
       aboutme
@@ -39,7 +38,6 @@ export const ADD_BIO = gql`
 export const ADD_COMMENT = gql`
   mutation AddComment($content: String!, $postId: ID!) {
     addComment(content: $content, postId: $postId) {
-      _id
       content
       createdAt
     }

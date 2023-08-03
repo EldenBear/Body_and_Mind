@@ -23,7 +23,6 @@ export const GET_ME = gql`
 export const GET_ALL_COMMENTS = gql`
   query getAllComments {
     comments {
-      _id
       content
       createdAt
     }
@@ -34,7 +33,6 @@ export const GET_ALL_COMMENTS = gql`
 export const GET_COMMENTS_BY_USER_ID = gql`
   query getCommentsByUserId($userId: ID!) {
     commentsByUser(userId: $userId) {
-      _id
       content
       createdAt
     }

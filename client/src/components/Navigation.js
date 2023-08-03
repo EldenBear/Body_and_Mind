@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_ME } from '../utils/queries';
 import SupportModal from '../components/SupportModal';
 import '../components/HomePage.css';
 import {
@@ -16,11 +14,15 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 
 const Navigation = (props) => {
-  const { loading, data } = useQuery(GET_ME);
+  
   const onClickMenuItem = (path) => {
     window.location.href = path;
   };
   const renderNavigation = () => {
+    if (props.loading) {
+      return;
+    };
+
     if (props.isMobile) {
       return (
         <div className='mobileHeader'>
@@ -36,7 +38,7 @@ const Navigation = (props) => {
             />
             <MenuList>
               <MenuItem onClick={() => onClickMenuItem('home')}>Home</MenuItem>
-              <MenuItem onClick={() => onClickMenuItem('profile')}>
+              <MenuItem onClick={() => onClickMenuItem(`profile/${props.data.me.username}`)}>
                 <a href='profile' className='menuItem'>
                   Profile
                 </a>
@@ -74,9 +76,9 @@ const Navigation = (props) => {
           <WrapItem>
             <Avatar size='2xl' src={props.avatarURL} className='avatarPhoto' />{' '}
           </WrapItem>
-          <p className='userName'>{data.me.username}</p>
+          <p className='userName'>{props.data.me.username}</p>
           <a href='home'>Home</a>
-          <a href='profile'>Profile</a>
+          <a href={`profile/${props.data.me.username}`}>Profile</a>
           <a href='workouts'>Workouts</a>
           <a href='/'>Logout</a>
         </div>

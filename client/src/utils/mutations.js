@@ -48,7 +48,6 @@ export const ADD_COMMENT = gql`
 export const ADD_POST = gql`
   mutation AddPost($title: String!, $description: String!, $image: String!) {
     addPost(title: $title, description: $description, image: $image) {
-      _id
       title
       description
       image
@@ -60,7 +59,6 @@ export const ADD_POST = gql`
 export const DELETE_POST = gql`
   mutation DeletePost($postId: ID!) {
     deletePost(postId: $postId) {
-      _id
     }
   }
 `;

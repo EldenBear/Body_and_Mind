@@ -56,23 +56,13 @@ MongoDB
 
 ## Contributions
 
-We welcome contributions to "Body and Mind." If you want to contribute, follow these steps:
-
-1- Fork the repository
-
-2- Create a new branch for your feature:
-    git checkout -b feature/YourFeature
-
-3- Make your changes and commit them:
-    git commit -m "Add your message here"
-
-4- Push the changes to your forked repository:
-    git push origin feature/YourFeature
-
-5- Submit a pull request to the main repository.
-
-## Licens
-
-## Questions
+- tg1489
+- EldenBear
+- jb1756
+- santos-al
+- Austin1094
+- Dougcodes205
 
 ## Links
+
+https://body--mind-424f753a39d8.herokuapp.com/

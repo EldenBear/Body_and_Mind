@@ -1,4 +1,5 @@
  import *  as React from "react";
+ import {useParams} from "react-router-dom";
  import Post from "../components/Post";
  import Comment from "../components/Comment";
  import ProfileNav from "../components/ProfileNav";
@@ -17,6 +18,7 @@
  const ProfilePage = () => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
   const [currentPost, setCurrentPost] = React.useState(0);
+  let {id} = useParams();
   const [posts, setPosts] = React.useState([
     {
       id: 1,
@@ -81,7 +83,7 @@
 
     return (
         <>
-        <ProfileNav isMobile={isMobile}></ProfileNav>
+        <ProfileNav isMobile={isMobile} username={id}></ProfileNav>
         <div className="profileMain">
         {renderPosts()}
       </div>

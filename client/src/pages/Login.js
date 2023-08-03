@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { LOGIN_USER } from '../utils/mutations';
+import { GET_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 import '../components/Login.css';
 
@@ -10,6 +11,15 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [login] = useMutation(LOGIN_USER);
+  const { loading, data } = useQuery(GET_ME);
+  React.useEffect( () => {
+    if (loading) {
+      return
+    }
+    if (data?.me != null) {
+      window.location.href = "/home";
+    }
+  },[loading, data?.me])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,9 +34,6 @@ const Login = () => {
       default:
         break;
     }
-
-    console.log('username: ' + '%c' + username, 'color: #bada55');
-    console.log('password: ' + '%c' + password, 'color: red');
   };
 
   const handleSubmit = async (e) => {
@@ -42,9 +49,6 @@ const Login = () => {
     } catch (err) {
       console.error(err);
     }
-
-    console.log('Username:', username);
-    console.log('Password:', password);
 
     setUsername('');
     setPassword('');

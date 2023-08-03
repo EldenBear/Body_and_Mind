@@ -31,14 +31,12 @@ const userSchema = new Schema({
   },
   gender: {
     type: String,
-    enum: ['male', 'female', 'non-binary', 'prefer-not-to-say'], // Updated enum values
   },
   profilePicture: {
     type: String,
   },
   activityLevel: {
     type: String,
-    enum: ['sedentary', 'active', 'social-active', 'very-active'], // Updated enum values
   },
   comments: [commentSchema],
 });

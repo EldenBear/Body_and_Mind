@@ -36,11 +36,12 @@ const Post = (props) => {
       <CardBody>
         <Text>{props.postText}</Text>
       </CardBody>
-      <Image
+     {props.imageURL &&
+     <Image
         objectFit="cover"
         src={props.imageURL}
         alt="Chakra UI"
-      />
+      />}
 
       <CardFooter
         justify="space-between"

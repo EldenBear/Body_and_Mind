@@ -41,7 +41,9 @@
 
 .sidenav a:hover {
   color: black;
+  cursor: pointer;
 }
+
 
 .main {
   margin-left: 360px;

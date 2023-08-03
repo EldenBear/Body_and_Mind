@@ -4,6 +4,7 @@ import { GET_ME } from '../utils/queries';
 import { ADD_BIO } from '../utils/mutations';
 import SupportModal from './SupportModal';
 import ProfilePicModal from './ProfilePicModal';
+import Auth from '../utils/auth';
 import '../components/ProfilePage.css';
 import {
   Avatar,
@@ -126,6 +127,10 @@ const ProfileNav = (props) => {
   }
 
   const onClickMenuItem = (path) => {
+    if (path === '/') {
+      Auth.logout();
+      return;
+    }
     window.location.href = path;
   };
 
@@ -367,7 +372,7 @@ const ProfileNav = (props) => {
                   </a>
                 </MenuItem>
                 <MenuItem onClick={() => onClickMenuItem('/')}>
-                  <a href='/' className='menuItem'>
+                  <a className='menuItem'>
                     Logout
                   </a>
                 </MenuItem>
@@ -459,7 +464,7 @@ const ProfileNav = (props) => {
           <a href='/home'>Home</a>
           <a href='/profile'>Profile</a>
           <a href='/workouts'>Workouts</a>
-          <a href='/'>Logout</a>
+          <a onClick={() => onClickMenuItem('/')}>Logout</a>
         </div>
         <SupportModal></SupportModal>
       </div>

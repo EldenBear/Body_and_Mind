@@ -1,6 +1,7 @@
 import * as React from 'react';
 import SupportModal from '../components/SupportModal';
 import '../components/HomePage.css';
+import Auth from '../utils/auth';
 import {
   Avatar,
   IconButton,
@@ -16,10 +17,14 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 const Navigation = (props) => {
   
   const onClickMenuItem = (path) => {
+    if (path === '/') {
+      Auth.logout();
+      return;
+    }
     window.location.href = path;
   };
   const renderNavigation = () => {
-    if (props.loading) {
+    if (props.loading || props.data?.me === undefined) {
       return;
     };
 
@@ -49,7 +54,7 @@ const Navigation = (props) => {
                 </a>
               </MenuItem>
               <MenuItem onClick={() => onClickMenuItem('/')}>
-                <a href='/' className='menuItem'>
+                <a className='menuItem'>
                   Logout
                 </a>
               </MenuItem>
@@ -80,7 +85,7 @@ const Navigation = (props) => {
           <a href='home'>Home</a>
           <a href={`profile/${props.data.me.username}`}>Profile</a>
           <a href='workouts'>Workouts</a>
-          <a href='/'>Logout</a>
+          <a onClick={() => onClickMenuItem('/')}>Logout</a>
         </div>
         <SupportModal></SupportModal>
 

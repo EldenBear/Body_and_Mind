@@ -20,6 +20,15 @@ const WorkoutPage = () => {
   const [search, setSearch] = React.useState("");
 
   React.useEffect( () => {
+    if (loading) {
+      return
+    }
+    if (data?.me === undefined) {
+      window.location.href = "/";
+    }
+  },[loading, data?.me])
+
+  React.useEffect( () => {
     function handleResize() {
       setIsMobile(window.innerWidth < 900);
     }

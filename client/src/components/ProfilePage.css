@@ -64,6 +64,7 @@
   
   .profileSidenav a:hover {
     color: black;
+    cursor: pointer;
   }
 
   .profileNavLinks{

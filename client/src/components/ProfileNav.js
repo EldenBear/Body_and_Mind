@@ -343,7 +343,7 @@ const ProfileNav = (props) => {
         <div>
           <div className='mobileHeader'>
             <h1 className='mobileHomeHeader'>
-              <a href='home'>Body & Mind</a>
+              <a href='/home'>Body & Mind</a>
             </h1>
             <Menu>
               <MenuButton
@@ -357,12 +357,12 @@ const ProfileNav = (props) => {
                   Home
                 </MenuItem>
                 <MenuItem onClick={() => onClickMenuItem('profile')}>
-                  <a href='profile' className='menuItem'>
+                  <a href='/profile' className='menuItem'>
                     Profile
                   </a>
                 </MenuItem>
                 <MenuItem onClick={() => onClickMenuItem('workouts')}>
-                  <a href='workouts' className='menuItem'>
+                  <a href='/workouts' className='menuItem'>
                     Workouts
                   </a>
                 </MenuItem>

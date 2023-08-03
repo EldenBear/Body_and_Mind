@@ -19,20 +19,19 @@ export const LOGIN_USER = gql`
   }
 `;
 
-//adding bio
-// export const ADD_BIO = gql`
-//   mutation AddBio($userId: ID!, $bio: BioInput!) {
-//     addBio(userId: $userId, bio: $bio) {
-//       username
-//       age
-//       aboutme
-//       hobbies
-//       gender
-//       profilePicture
-//       activityLevel
-//     }
-//   }
-// `;
+export const ADD_BIO = gql`
+  mutation AddBio($bio: BioInput!) {
+    addBio(bio: $bio) {
+      username
+      age
+      aboutme
+      hobbies
+      gender
+      profilePicture
+      activityLevel
+    }
+  }
+`;
 
 //adding comment
 // export const ADD_COMMENT = gql`

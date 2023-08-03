@@ -39,7 +39,9 @@ const typeDefs = gql`
   }
 
   input BioInput {
+    username: String
     aboutme: String
+    age: String
     hobbies: String
     gender: String
     profilePicture: String
@@ -61,7 +63,7 @@ const typeDefs = gql`
   type Mutation {
     register(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
-    addBio(userId: ID!, bio: BioInput!): User
+    addBio(bio: BioInput!): User
   }
 `;
 

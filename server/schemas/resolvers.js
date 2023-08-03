@@ -1,10 +1,6 @@
 const { User } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const axios = require('axios');
-// const request = require('request');
-//Still need api token?
-// Need the sign token utility when finsihed
 
 const resolvers = {
   Query: {
@@ -16,18 +12,6 @@ const resolvers = {
       }
     },
   },
-  // exercises: async (_, { muscle }) => {
-  //   try {
-  //     const response = await axios.get({
-  //       url: `https://api.api-ninjas.com/v1/exercises?muscle=${muscle}`,
-  //       headers: { 'X-Api-Key': '' },
-  //     });
-  //     return { response };
-  //   } catch (error) {
-  //     console.error('Error fetching exercises from the external API:', error);
-  //     throw new Error('Failed to fetch exercises from the external API.');
-  //   }
-  // },
 
   Mutation: {
     register: async (parent, { username, password }) => {
@@ -54,6 +38,29 @@ const resolvers = {
       } catch (err) {
         console.error(err);
         throw new AuthenticationError('An error occurred during login');
+      }
+    },
+    addBio: async (parent, args, context) => {
+      try {
+        console.log('%c' + 'Args: ', 'color: red' + args);
+        return User.findOneAndUpdate(
+          { _id: context.user._id },
+          {
+            $set: {
+              username: args.bio.username,
+              age: args.bio.age,
+              aboutme: args.bio.aboutme,
+              hobbies: args.bio.hobbies,
+              gender: args.bio.gender,
+              profilePicture: args.bio.profilePicture,
+              activityLevel: args.bio.activityLevel,
+            },
+          },
+          { new: true, runValidators: true }
+        );
+      } catch (err) {
+        console.error(err);
+        throw new AuthenticationError('Error occurred while updating the bio');
       }
     },
   },

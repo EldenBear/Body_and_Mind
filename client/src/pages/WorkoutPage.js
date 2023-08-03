@@ -2,6 +2,8 @@ import * as React from "react";
 import Workout from "../components/Workout";
 import Navigation from "../components/Navigation";
 import "../components/WorkoutPage.css";
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
 import {
   Input,
   InputGroup,
@@ -11,6 +13,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 
 
 const WorkoutPage = () => {
+  const { loading, data } = useQuery(GET_ME);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
   const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
   const [workouts, setWorkouts] = React.useState([]);
@@ -66,7 +69,7 @@ const WorkoutPage = () => {
 
   return (
     <>
-    <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
+    <Navigation isMobile={isMobile} avatarURL={avatarURL} loading={loading} data={data}></Navigation>
       <div className="main">
         <InputGroup className="inputBox">
           <Input type="tel" placeholder="Search for an exercise!" onChange={workoutSearch}/>

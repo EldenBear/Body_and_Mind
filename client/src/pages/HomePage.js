@@ -2,6 +2,8 @@ import * as React from "react";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
 import Navigation from "../components/Navigation";
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
 import "../components/HomePage.css";
 import {
   Box,
@@ -21,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 
 const HomePage = () => {
+  const { loading, data } = useQuery(GET_ME);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
   const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
   const [currentDrawer, setCurrentDrawer] = React.useState(null);
@@ -78,8 +81,8 @@ const HomePage = () => {
   function onSubmit() {
     const newPost = {
       id: posts.length + 1,
-      name: "John Smith",
-      userTitle: "Developer",
+      name: data.me.username,
+      userTitle: data.me.activityLevel,
       postText: addPostDesc,
       imageURL: addPostImage,
     };
@@ -89,8 +92,8 @@ const HomePage = () => {
 
   function onSubmitComment() {
     const newComment = {
-      name: "John Smith",
-      userTitle: "Developer",
+      name: data.me.username,
+      userTitle: data.me.activityLevel,
       postText: addPostComment
     };
     const post = posts.filter(x => x.id === currentPost);
@@ -136,7 +139,7 @@ const HomePage = () => {
   return (
     <>
     <Button className="addPostButton" position={"fixed"} colorScheme="primary" onClick={() => openDrawer(postDrawer)}>+ Add Post</Button>
-     <Navigation isMobile={isMobile} avatarURL={avatarURL}></Navigation>
+     <Navigation isMobile={isMobile} avatarURL={avatarURL} loading={loading} data={data}></Navigation>
       <div className="main">
        {renderPosts()}
       </div>

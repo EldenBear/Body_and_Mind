@@ -266,9 +266,9 @@ const ProfileNav = (props) => {
         </div>
       </div>
       <div className="profileNavLinks">
-        <a href="home">Home</a>
-        <a href="profile">Profile</a>
-        <a href="workouts">Workouts</a>
+        <a href="/home">Home</a>
+        <a href="/profile">Profile</a>
+        <a href="/workouts">Workouts</a>
         <a href="/">Logout</a>
       </div>
       <SupportModal></SupportModal>

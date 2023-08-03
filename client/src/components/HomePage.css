@@ -126,6 +126,11 @@ menuItem {
   z-index: 999;
 }
 
+.userTitle:hover{
+  cursor: pointer;
+  color: gold;
+}
+
 
 @media screen and (max-width: 900px) {
   .main {
@@ -138,5 +143,9 @@ menuItem {
 
   .sidenav a {
     font-size: 18px;
+  }
+
+  .addPostButton{
+    top: 54px;
   }
 }

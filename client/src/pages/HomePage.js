@@ -131,8 +131,8 @@ const HomePage = () => {
   // Submit new comment to add it to the comments array
   async function onSubmitComment() {
     const newComment = {
-      name: 'Fake User',
-      userTitle: 'Shithead',
+      name: 'no data',
+      userTitle: 'no data',
       postText: addPostComment,
     };
 

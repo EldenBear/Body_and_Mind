@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
 import SupportModal from '../components/SupportModal';
 import '../components/HomePage.css';
 import Auth from '../utils/auth';
@@ -15,7 +17,7 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 
 const Navigation = (props) => {
-  
+  const { loading, data } = useQuery(GET_ME);
   const onClickMenuItem = (path) => {
     if (path === '/') {
       Auth.logout();
@@ -26,7 +28,7 @@ const Navigation = (props) => {
   const renderNavigation = () => {
     if (props.loading || props.data?.me === undefined) {
       return;
-    };
+    }
 
     if (props.isMobile) {
       return (
@@ -43,7 +45,11 @@ const Navigation = (props) => {
             />
             <MenuList>
               <MenuItem onClick={() => onClickMenuItem('home')}>Home</MenuItem>
-              <MenuItem onClick={() => onClickMenuItem(`profile/${props.data.me.username}`)}>
+              <MenuItem
+                onClick={() =>
+                  onClickMenuItem(`profile/${props.data.me.username}`)
+                }
+              >
                 <a href='profile' className='menuItem'>
                   Profile
                 </a>
@@ -54,9 +60,7 @@ const Navigation = (props) => {
                 </a>
               </MenuItem>
               <MenuItem onClick={() => onClickMenuItem('/')}>
-                <a className='menuItem'>
-                  Logout
-                </a>
+                <a className='menuItem'>Logout</a>
               </MenuItem>
               <MenuItem>
                 <Link href='https://www.heart.org/'>
@@ -79,7 +83,11 @@ const Navigation = (props) => {
         </h1>
         <div>
           <WrapItem>
-            <Avatar size='2xl' src={props.avatarURL} className='avatarPhoto' />{' '}
+            <Avatar
+              size='2xl'
+              src={data && data.me && data.me.profilePicture}
+              className='avatarPhoto'
+            />{' '}
           </WrapItem>
           <p className='userName'>{props.data.me.username}</p>
           <a href='home'>Home</a>

@@ -348,8 +348,8 @@ const ProfileNav = (props) => {
                 <MenuItem onClick={() => onClickMenuItem('home')}>
                   Home
                 </MenuItem>
-                <MenuItem onClick={() => onClickMenuItem('profile')}>
-                  <a href='/profile' className='menuItem'>
+                <MenuItem onClick={() => onClickMenuItem(`/profile/${meData?.data?.me?.username ?? ""}`)}>
+                  <a className='menuItem'>
                     Profile
                   </a>
                 </MenuItem>
@@ -449,7 +449,7 @@ const ProfileNav = (props) => {
         </div>
         <div className='profileNavLinks'>
           <a href='/home'>Home</a>
-          <a href='/profile'>Profile</a>
+          <a href={`/profile/${meData?.data?.me?.username ?? ""}`}>Profile</a>
           <a href='/workouts'>Workouts</a>
           <a onClick={() => onClickMenuItem('/')}>Logout</a>
         </div>

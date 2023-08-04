@@ -24,12 +24,21 @@ import {
 } from '@chakra-ui/react';
 
 const HomePage = () => {
+  // Query the 'me' data from the server
   const { loading, data } = useQuery(GET_ME);
+
+  // State to handle mobile responsiveness
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
+
+  // State for user avatar URL
   const [avatarURL, setAvatarURL] = React.useState(
     'https://bit.ly/broken-link'
   );
+
+  // State for handling the open drawer and its type
   const [currentDrawer, setCurrentDrawer] = React.useState(null);
+
+  // State for managing posts
   const [posts, setPosts] = React.useState([
     {
       id: 1,
@@ -47,17 +56,26 @@ const HomePage = () => {
       ],
     },
   ]);
+
+  // State for adding a new post
   const [addPostDesc, setAddPostDesc] = React.useState('');
   const [addPostImage, setAddPostImage] = React.useState('');
+
+  // State for adding a new comment
   const [addPostComment, setAddPostComment] = React.useState('');
   const [currentPost, setCurrentPost] = React.useState(0);
 
+  // UseDisclosure hook to manage the drawer state
   const { isOpen, onOpen, onClose, firstField } = useDisclosure();
+
+  // Constants for drawer types
   const commentDrawer = 'comment';
   const postDrawer = 'post';
 
+  // Mutation hook to add a new comment
   const [addComment] = useMutation(ADD_COMMENT);
 
+  // Check if user is authenticated and redirect if not
   React.useEffect(() => {
     if (loading) {
       return;
@@ -67,6 +85,7 @@ const HomePage = () => {
     }
   }, [loading, data?.me]);
 
+  // Listen for window resize events to handle mobile responsiveness
   React.useEffect(() => {
     function handleResize() {
       setIsMobile(window.innerWidth < 900);
@@ -74,6 +93,7 @@ const HomePage = () => {
     window.addEventListener('resize', handleResize);
   });
 
+  // Function to open the drawer based on its type (comment or post)
   function openDrawer(drawer, postId) {
     setCurrentDrawer(drawer);
     if (drawer === commentDrawer) {
@@ -82,6 +102,7 @@ const HomePage = () => {
     onOpen();
   }
 
+  // Event handlers for input fields
   function onChangePostDesc(e) {
     setAddPostDesc(e.target.value);
   }
@@ -94,6 +115,7 @@ const HomePage = () => {
     setAddPostComment(e.target.value);
   }
 
+  // Submit new post to add it to the posts array
   function onSubmit() {
     const newPost = {
       id: posts.length + 1,
@@ -106,6 +128,7 @@ const HomePage = () => {
     onClose();
   }
 
+  // Submit new comment to add it to the comments array
   async function onSubmitComment() {
     const newComment = {
       name: 'Fake User',
@@ -129,6 +152,7 @@ const HomePage = () => {
     setPosts([...newArray, ...post]);
   }
 
+  // Render all posts
   const renderPosts = () => {
     return posts.map((post) => {
       return (
@@ -143,24 +167,35 @@ const HomePage = () => {
     });
   };
 
+  // Render comments for the current post
   const renderComments = () => {
-    const post = posts.filter((x) => x.id === currentPost);
-    if (post.length !== 1) {
-      return;
+    if (loading) {
+      return <p>Loading comments...</p>;
     }
-    return post[0].comments.map((comment) => {
-      return (
-        <Comment
-          name={comment.name}
-          userTitle={comment.userTitle}
-          postText={comment.postText}
-        ></Comment>
-      );
-    });
+
+    if (data?.me) {
+      // Find the post based on the 'currentPost' state
+      const post = data.me;
+
+      // If the post is found and it has comments
+      if (post && post.comments && post.comments.length > 0) {
+        return post.comments.map((comment) => (
+          <Comment
+            key={comment._id}
+            name={post.username}
+            userTitle={post.activityLevel}
+            postText={comment.content}
+          />
+        ));
+      }
+    } else {
+      return <p>No comments yet.</p>;
+    }
   };
 
   return (
     <>
+      {/* Button to add a new post */}
       <Button
         className='addPostButton'
         position={'fixed'}
@@ -169,13 +204,17 @@ const HomePage = () => {
       >
         + Add Post
       </Button>
+      {/* Navigation bar */}
       <Navigation
         isMobile={isMobile}
         avatarURL={avatarURL}
         loading={loading}
         data={data}
       ></Navigation>
+      {/* Render all posts */}
       <div className='main'>{renderPosts()}</div>
+
+      {/* Drawer for comments */}
       <Drawer
         onClose={onClose}
         isOpen={isOpen && currentDrawer === commentDrawer}
@@ -198,11 +237,13 @@ const HomePage = () => {
             >
               Submit
             </Button>
+            {/* Render comments for the current post */}
             {renderComments()}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
 
+      {/* Drawer for creating a new post */}
       <Drawer
         isOpen={isOpen && currentDrawer === postDrawer}
         placement='right'

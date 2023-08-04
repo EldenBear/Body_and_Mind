@@ -17,7 +17,6 @@ const Signup = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log('Input change:', name, value);
 
     switch (name) {
       case 'username':
@@ -36,40 +35,24 @@ const Signup = () => {
 
   //   Made async because we are talking to the database
   const handleSubmit = async (e) => {
-    console.log('Form Submitted ' + '%c' + '(Beginning)', 'color: #bada55');
     e.preventDefault();
 
-    console.log(
-      'Form Submitted ' + '%c' + '(After preventDefault())',
-      'color: #bada55'
-    );
-
-    // Moved password pattern to back end
-
-    console.log('Form Submitted ' + '%c' + '(Before try{})', 'color: #bada55');
-
-    // Talking with GraphQL before registering
     try {
       const { data } = await register({
         variables: { username: username, password: password },
       });
       const { token } = data.register;
-      console.log('%c' + data, 'color: #bada55');
       Auth.login(token);
     } catch (err) {
       console.error(err);
       setError('Error occurred during registration');
     }
 
-    console.log('Username:', username);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
 
     setUsername('');
     setPassword('');
     setConfirmPassword('');
     setError('');
-    console.log('Form Submitted ' + '%c' + '(End)', 'color: #bada55');
   };
 
   return (

@@ -20,14 +20,9 @@ const typeDefs = gql`
     createdAt: String
   }
 
-  # type Post {
-  #   _id: ID!
-  #   title: String
-  #   description: String
-  #   image: String
-  #   user: [User]
-  #   comments: [Comment]
-  # }
+  input CommentInput {
+    content: String!
+  }
 
   type Exercise {
     name: String!
@@ -58,13 +53,13 @@ const typeDefs = gql`
     user(username: String!): User
     exercises: [Exercise]!
     comments: [Comment]
-    commentsByUser(userId: ID!): [Comment]
   }
 
   type Mutation {
     register(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
     addBio(bio: BioInput!): User
+    addComment(comment: CommentInput): Comment
   }
 `;
 

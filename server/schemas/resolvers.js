@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const commentSchema = require('../models/commentSchema');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -11,7 +12,7 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in');
       }
     },
-     user: async (parent, { username }) => {
+    user: async (parent, { username }) => {
       return User.findOne({ username }).populate('comments');
     },
   },
@@ -64,6 +65,26 @@ const resolvers = {
       } catch (err) {
         console.error(err);
         throw new AuthenticationError('Error occurred while updating the bio');
+      }
+    },
+    addComment: async (parents, args, context) => {
+      try {
+        const user = await User.findById(context.user._id);
+        if (!user) {
+          throw new Error('User not found');
+        }
+
+        console.log('content: ' + args.comment.content);
+
+        const newComment = {
+          content: args.comment.content,
+        };
+
+        user.comments.push(newComment);
+        await user.save();
+        return newComment;
+      } catch (err) {
+        console.error(err);
       }
     },
   },

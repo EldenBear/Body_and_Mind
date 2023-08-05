@@ -98,7 +98,8 @@ const HomePage = () => {
     if (drawer === commentDrawer) {
       console.log(`postIdData: ${JSON.stringify(postIdData)}`);
       setCurrentPost(postId);
-      // Need _id
+      // Need _id of Post model inside setCurrentPost()
+      // or need to make postId in Post model which grabs the input from here
     }
     onOpen();
   }

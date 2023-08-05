@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_ME } from '../utils/queries';
+import { GET_ME, GET_POSTS } from '../utils/queries';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 import ProfileNav from '../components/ProfileNav';
@@ -17,27 +17,17 @@ import {
 } from '@chakra-ui/react';
 
 const ProfilePage = () => {
-  const { loading, data } = useQuery(GET_ME);
+  const { loading: meLoading, data: meData } = useQuery(GET_ME);
+  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
   const [currentPost, setCurrentPost] = React.useState(0);
   let { id } = useParams();
-  const [posts, setPosts] = React.useState([
-    {
-      id: 1,
-      name: 'John Smith',
-      userTitle: 'Developer',
-      postText: 'Sample text',
-      imageURL:
-        'https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-      comments: [
-        {
-          name: 'John Smith',
-          userTitle: 'Developer',
-          postText: 'Text text etxtdfcsj',
-        },
-      ],
-    },
-  ]);
+  const [posts, setPosts] = React.useState([]);
+  React.useEffect(() => {
+    if (postsData?.getPosts) {
+      setPosts(postsData.getPosts);
+    }
+  }, [postsData]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
@@ -56,6 +46,7 @@ const ProfilePage = () => {
     return posts.map((post) => {
       return (
         <Post
+          key={post._id}
           name={post.name}
           userTitle={post.userTitle}
           imageURL={post.imageURL}
@@ -67,13 +58,13 @@ const ProfilePage = () => {
   };
 
   const renderComments = () => {
-    if (loading) {
+    if (meLoading) {
       return <p>Loading comments...</p>;
     }
 
-    if (data?.me) {
+    if (meData?.me) {
       // Find the post based on the 'currentPost' state
-      const post = data.me;
+      const post = meData.me;
 
       // If the post is found and it has comments
       if (post && post.comments && post.comments.length > 0) {

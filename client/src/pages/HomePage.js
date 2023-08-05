@@ -3,7 +3,7 @@ import Post from '../components/Post';
 import Comment from '../components/Comment';
 import Navigation from '../components/Navigation';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_ME } from '../utils/queries';
+import { GET_ME, GET_POSTS, GET_POST_ID } from '../utils/queries';
 import { ADD_COMMENT, ADD_POST } from '../utils/mutations';
 import '../components/HomePage.css';
 import {
@@ -25,7 +25,13 @@ import {
 
 const HomePage = () => {
   // Query the 'me' data from the server
-  const { loading, data } = useQuery(GET_ME);
+  const { loading: meLoading, data: meData } = useQuery(GET_ME);
+
+  // Query 'getPosts' data from the server
+  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
+
+  // Query 'getPostId' data from the server
+  const { loading: postIdLoading, data: postIdData } = useQuery(GET_POSTS);
 
   // Send the data to GraphQL
   const [addPost] = useMutation(ADD_POST);
@@ -42,23 +48,13 @@ const HomePage = () => {
   const [currentDrawer, setCurrentDrawer] = React.useState(null);
 
   // State for managing posts
-  const [posts, setPosts] = React.useState([
-    {
-      id: 1,
-      name: 'John Smith',
-      userTitle: 'Developer',
-      postText: 'Sample text',
-      imageURL:
-        'https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
-      comments: [
-        {
-          name: 'John Smith',
-          userTitle: 'Developer',
-          postText: 'Text text etxtdfcsj',
-        },
-      ],
-    },
-  ]);
+  const [posts, setPosts] = React.useState([]);
+
+  React.useEffect(() => {
+    if (postsData?.getPosts) {
+      setPosts(postsData.getPosts);
+    }
+  }, [postsData]);
 
   // State for adding a new post
   const [addPostDesc, setAddPostDesc] = React.useState('');
@@ -80,13 +76,13 @@ const HomePage = () => {
 
   // Check if user is authenticated and redirect if not
   React.useEffect(() => {
-    if (loading) {
+    if (meLoading) {
       return;
     }
-    if (data?.me === undefined) {
+    if (meData?.me === undefined) {
       window.location.href = '/';
     }
-  }, [loading, data?.me]);
+  }, [meLoading, meData?.me]);
 
   // Listen for window resize events to handle mobile responsiveness
   React.useEffect(() => {
@@ -100,7 +96,9 @@ const HomePage = () => {
   function openDrawer(drawer, postId) {
     setCurrentDrawer(drawer);
     if (drawer === commentDrawer) {
+      console.log(`postIdData: ${JSON.stringify(postIdData)}`);
       setCurrentPost(postId);
+      // Need _id
     }
     onOpen();
   }
@@ -155,11 +153,11 @@ const HomePage = () => {
 
   // Submit new comment to add it to the comments array
   async function onSubmitComment() {
-    const newComment = {
-      name: 'no data',
-      userTitle: 'no data',
-      postText: addPostComment,
-    };
+    // const newComment = {
+    //   name: 'no data',
+    //   userTitle: 'no data',
+    //   postText: addPostComment,
+    // };
 
     const { data } = await addComment({
       variables: {
@@ -169,19 +167,34 @@ const HomePage = () => {
       },
     });
 
-    console.log(`data: ${JSON.stringify(data)}`);
+    // console.log(`data: ${JSON.stringify(data.addComment.content)}`);
 
     const post = posts.filter((x) => x.id === currentPost);
+
+    console.log(`post: ${JSON.stringify(post)}`);
+    console.log(`currentPost: ${JSON.stringify(currentPost)}`);
+
     const newArray = posts.filter((x) => x.id !== currentPost);
-    post[0].comments.push(newComment);
+    post[0].comments.push(data.addComment.content);
     setPosts([...newArray, ...post]);
   }
+  /*
+
+
+  const { loading: meLoading, data: meData } = useQuery(GET_ME);
+
+  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
+
+
+
+  */
 
   // Render all posts
   const renderPosts = () => {
     return posts.map((post) => {
       return (
         <Post
+          key={post._id}
           name={post.name}
           userTitle={post.userTitle}
           imageURL={post.imageURL}
@@ -194,13 +207,13 @@ const HomePage = () => {
 
   // Render comments for the current post
   const renderComments = () => {
-    if (loading) {
+    if (meLoading) {
       return <p>Loading comments...</p>;
     }
 
-    if (data?.me) {
+    if (meData?.me) {
       // Find the post based on the 'currentPost' state
-      const post = data.me;
+      const post = meData.me;
 
       // If the post is found and it has comments
       if (post && post.comments && post.comments.length > 0) {
@@ -233,8 +246,8 @@ const HomePage = () => {
       <Navigation
         isMobile={isMobile}
         avatarURL={avatarURL}
-        loading={loading}
-        data={data}
+        loading={meLoading}
+        data={meData}
       ></Navigation>
       {/* Render all posts */}
       <div className='main'>{renderPosts()}</div>

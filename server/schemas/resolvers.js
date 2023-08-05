@@ -12,6 +12,26 @@ const resolvers = {
         throw new AuthenticationError('You need to be logged in');
       }
     },
+    allPostIds: async () => {
+      try {
+        const posts = await Post.find();
+        return posts.map((post) => post._id);
+      } catch (err) {
+        console.error(err);
+        throw new Error('Failed to fetch post ids');
+      }
+    },
+    postId: async (_, __, context) => {
+      const user = await User.findOne({ _id: context.user._id });
+      
+    },
+
+    getPosts: async () => {
+      return Post.find();
+    },
+    singleUserPosts: async (parent, { userId }) => {
+      return Post.findOne({ _id: userId });
+    },
     user: async (parent, { username }) => {
       return User.findOne({ username }).populate('comments');
     },
@@ -74,15 +94,24 @@ const resolvers = {
           throw new Error('User not found');
         }
 
+        console.log(`user:: ${user}`);
+
         console.log('content: ' + args.comment.content);
 
         const newComment = {
           content: args.comment.content,
         };
 
-        user.comments.push(newComment);
-        await user.save();
-        return newComment;
+        console.log(`newComment: ${JSON.stringify(newComment)}`);
+
+        if (user && user.comments) {
+          console.log(`user.comments: ${user.comments}`);
+          user.comments.push(newComment);
+          await user.save();
+          return newComment;
+        } else {
+          throw new Error('User or user comments not found');
+        }
       } catch (err) {
         console.error(err);
       }

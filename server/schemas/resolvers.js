@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const commentSchema = require('../models/commentSchema');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
@@ -85,6 +85,28 @@ const resolvers = {
         return newComment;
       } catch (err) {
         console.error(err);
+      }
+    },
+    addPost: async (_, args, context) => {
+      // Check if the user is logged in
+      if (!context.user) {
+        throw new AuthenticationError('You need to be logged in');
+      }
+
+      console.log(`args: ${JSON.stringify(args)}`);
+      // Get the logged-in user's ID from the context
+      const userId = context.user._id;
+
+      try {
+        const newPost = await Post.create({
+          userId: userId,
+          postText: args.post.postText,
+          imageURL: args.post.imageURL,
+        });
+        return newPost;
+      } catch (err) {
+        console.error(err);
+        throw new Error('Failed to create a new post');
       }
     },
   },

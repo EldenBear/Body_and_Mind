@@ -4,7 +4,7 @@ import Comment from '../components/Comment';
 import Navigation from '../components/Navigation';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
-import { ADD_COMMENT } from '../utils/mutations';
+import { ADD_COMMENT, ADD_POST } from '../utils/mutations';
 import '../components/HomePage.css';
 import {
   Box,
@@ -26,6 +26,9 @@ import {
 const HomePage = () => {
   // Query the 'me' data from the server
   const { loading, data } = useQuery(GET_ME);
+
+  // Send the data to GraphQL
+  const [addPost] = useMutation(ADD_POST);
 
   // State to handle mobile responsiveness
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 900);
@@ -116,14 +119,36 @@ const HomePage = () => {
   }
 
   // Submit new post to add it to the posts array
-  function onSubmit() {
+  async function onSubmit() {
     const newPost = {
-      id: posts.length + 1,
-      name: data.me.username,
-      userTitle: data.me.activityLevel,
       postText: addPostDesc,
       imageURL: addPostImage,
     };
+
+    const { data } = await addPost({
+      variables: {
+        post: {
+          postText: addPostDesc,
+          imageURL: addPostImage,
+        },
+      },
+    });
+
+    /*
+    {
+      "data": {
+        "addPost": {
+          "postText": "Google",
+          "imageURL": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z29vZ2xlJTIwbG9nb3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
+        }
+      }
+    }
+*/
+
+    console.log(`postId: ${posts.length + 1}`);
+    console.log(`postText: ${addPostDesc}`);
+    console.log(`imageURL: ${addPostImage}`);
+
     setPosts([...posts, newPost]);
     onClose();
   }

@@ -38,6 +38,10 @@ const userSchema = new Schema({
   activityLevel: {
     type: String,
   },
+  postId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post',
+  },
   comments: [commentSchema],
 });
 

@@ -41,6 +41,15 @@ export const ADD_COMMENT = gql`
   }
 `;
 
+export const ADD_POST = gql`
+  mutation AddPost($post: PostInput) {
+    addPost(post: $post) {
+      postText
+      imageURL
+    }
+  }
+`;
+
 //adding post
 // export const ADD_POST = gql`
 //   mutation AddPost($title: String!, $description: String!, $image: String!) {

@@ -39,7 +39,6 @@ import {
   HamburgerIcon,
 } from '@chakra-ui/icons';
 
-
 const ProfileNav = (props) => {
   const [isInEditMode, setIsInEditMode] = React.useState(false);
   const [gender, setGender] = React.useState('Male');
@@ -60,10 +59,10 @@ const ProfileNav = (props) => {
     if (loading || meData === undefined) {
       return;
     }
-    if (meData?.data.me.username === data?.user.username ) {
+    if (meData?.data.me.username === data?.user.username) {
       setIsReadOnly(false);
     }
-  },[ loading, meData, data])
+  }, [loading, meData, data]);
 
   async function onSelectGender(event) {
     const newGender = event.target.value;
@@ -168,7 +167,6 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 name='username'
                 onSubmit={async (newValue) => {
-
                   try {
                     const { data } = await addBio({
                       variables: {
@@ -199,7 +197,6 @@ const ProfileNav = (props) => {
                 className='aboutMe'
                 name='aboutme'
                 onSubmit={async (newValue) => {
-
                   try {
                     const { data } = await addBio({
                       variables: {
@@ -251,15 +248,15 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 onSubmit={async (newValue) => {
-
                   try {
-                    const { data } = await addBio({
+                    const { data: ageInfo } = await addBio({
                       variables: {
                         bio: {
                           age: newValue,
                         },
                       },
                     });
+                    console.log(`age: ${ageInfo}`);
                   } catch (err) {
                     console.error(err);
                   }
@@ -287,9 +284,12 @@ const ProfileNav = (props) => {
                   <option value='Very Active'>Very Active</option>
                 </Select>
               )}
-              {!isInEditMode && data && data.user && data.user.activityLevel && (
-                <span>{data.user.activityLevel}</span>
-              )}
+              {!isInEditMode &&
+                data &&
+                data.user &&
+                data.user.activityLevel && (
+                  <span>{data.user.activityLevel}</span>
+                )}
             </Box>
             <Box>
               <Heading size='xs' textTransform='uppercase'>
@@ -303,7 +303,6 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 onSubmit={async (newValue) => {
-
                   try {
                     const { data } = await addBio({
                       variables: {
@@ -348,10 +347,14 @@ const ProfileNav = (props) => {
                 <MenuItem onClick={() => onClickMenuItem('home')}>
                   Home
                 </MenuItem>
-                <MenuItem onClick={() => onClickMenuItem(`/profile/${meData?.data?.me?.username ?? ""}`)}>
-                  <a className='menuItem'>
-                    Profile
-                  </a>
+                <MenuItem
+                  onClick={() =>
+                    onClickMenuItem(
+                      `/profile/${meData?.data?.me?.username ?? ''}`
+                    )
+                  }
+                >
+                  <a className='menuItem'>Profile</a>
                 </MenuItem>
                 <MenuItem onClick={() => onClickMenuItem('workouts')}>
                   <a href='/workouts' className='menuItem'>
@@ -359,9 +362,7 @@ const ProfileNav = (props) => {
                   </a>
                 </MenuItem>
                 <MenuItem onClick={() => onClickMenuItem('/')}>
-                  <a className='menuItem'>
-                    Logout
-                  </a>
+                  <a className='menuItem'>Logout</a>
                 </MenuItem>
                 <MenuItem>
                   <SupportModal></SupportModal>
@@ -449,7 +450,7 @@ const ProfileNav = (props) => {
         </div>
         <div className='profileNavLinks'>
           <a href='/home'>Home</a>
-          <a href={`/profile/${meData?.data?.me?.username ?? ""}`}>Profile</a>
+          <a href={`/profile/${meData?.data?.me?.username ?? ''}`}>Profile</a>
           <a href='/workouts'>Workouts</a>
           <a onClick={() => onClickMenuItem('/')}>Logout</a>
         </div>

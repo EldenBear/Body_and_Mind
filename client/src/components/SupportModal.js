@@ -25,7 +25,7 @@ const SupportModal = () => {
       {isOpen && (
         <>
           <div className="blur-overlay" onClick={onClose} />
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Support Hotlines</ModalHeader>

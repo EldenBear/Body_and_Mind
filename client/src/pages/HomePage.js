@@ -180,25 +180,18 @@ const HomePage = () => {
       return <p>Comments are loading</p>;
     }
 
-    if (meData?.me) {
-      // Find the post based on the 'currentPost' state
-      const post = meData.me;
-
-      // If the post is found and it has comments
-      if (commentData) {
-        console.log(commentData);
-        return commentData.getCommentsByPostId.map((comment) => (
-          <Comment
-            key={comment._id}
-            name={comment.username}
-            userTitle={comment.activityLevel}
-            postText={comment.content}
-            profilePicture={comment.profilePicture}
-          />
-        ));
-      }
+    if (commentData && commentData.getCommentsByPostId) {
+      return commentData.getCommentsByPostId.map((comment) => (
+        <Comment
+          key={comment._id}
+          name={comment.username}
+          userTitle={comment.activityLevel}
+          postText={comment.content}
+          profilePicture={comment.profilePicture}
+        />
+      ));
     } else {
-      return <p>No comments yet.</p>;
+      return <p>No comments yet</p>
     }
   };
 

@@ -50,9 +50,33 @@ const resolvers = {
       return postPayload;
     },
     getPostsByUsername: async (parent, { username }) => {
-      const result = await User.findById( {username} );
-      console.log(result);
-      return result.posts;
+      try {
+
+        const result = await User.findOne({username: username} );
+        const posts = await Post.find();
+  
+        const postPayload = [];
+        result.posts.forEach(postId => {
+          const post = posts.filter(x => x._id.equals(postId))[0];
+  
+          const payload = {
+            _id: post._id,
+            userId: post.userId,
+            username: result.username,
+            profilePicture: result.profilePicture,
+            activityLevel: result.activityLevel,
+            postText: post.postText,
+            imageURL: post.imageURL,
+            comments: post.comments
+          };
+  
+          postPayload.push(payload);
+        });
+  
+        return postPayload;
+      } catch (err){
+        console.error(err);
+      }
     },
     getCommentsByPostId: async (parent, {postId}) => {
       if(postId == null){

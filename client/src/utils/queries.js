@@ -45,8 +45,12 @@ export const GET_POSTS = gql`
 export const GET_POSTS_BY_USERNAME = gql`
   query getPostsByUsername($username: String!) {
     getPostsByUsername(username: $username) {
+      _id
       postText
       imageURL
+      activityLevel
+      username
+      profilePicture
     }
   }
 `;
@@ -82,10 +86,6 @@ export const QUERY_USER = gql`
       gender
       profilePicture
       activityLevel
-      comments {
-        content
-        createdAt
-      }
     }
   }
 `;

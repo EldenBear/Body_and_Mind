@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_ME, GET_POSTS_BY_USERNAME } from '../utils/queries';
+import { GET_ME, GET_POSTS_BY_USERNAME, GET_COMMENTS_BY_POST_ID } from '../utils/queries';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 import ProfileNav from '../components/ProfileNav';
@@ -17,6 +17,9 @@ import {
 } from '@chakra-ui/react';
 
 const ProfilePage = () => {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
+  const [currentPost, setCurrentPost] = React.useState(null);
+
   const { loading: meLoading, data: meData } = useQuery(GET_ME);
   
   let { id } = useParams();
@@ -25,15 +28,10 @@ const ProfilePage = () => {
     variables: { username: id },
   });
 
+  const {loading: commentsLoading, data: commentData, refetch: refetchComments} = useQuery(GET_COMMENTS_BY_POST_ID, {
+    variables: { postId: currentPost },
+  });
 
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
-  const [currentPost, setCurrentPost] = React.useState(0);
-  const [posts, setPosts] = React.useState([]);
-  React.useEffect(() => {
-    if (postsData?.getPosts) {
-      setPosts(postsData.getPosts);
-    }
-  }, [postsData]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   React.useEffect(() => {
@@ -49,15 +47,19 @@ const ProfilePage = () => {
   }
 
   const renderPosts = () => {
-    return posts.map((post) => {
+    if(postsLoading){
+      return <p>Loading...</p>
+    }
+    return postsData.getPostsByUsername.map((post) => {
       return (
         <Post
           key={post._id}
-          name={post.name}
-          userTitle={post.userTitle}
+          name={post.username}
+          userTitle={post.activityLevel}
           imageURL={post.imageURL}
           postText={post.postText}
-          onClickComment={() => openDrawer(post.id)}
+          profilePicture={post.profilePicture}
+          onClickComment={() => openDrawer(post._id)}
         ></Post>
       );
     });
@@ -68,23 +70,18 @@ const ProfilePage = () => {
       return <p>Loading comments...</p>;
     }
 
-    if (meData?.me) {
-      // Find the post based on the 'currentPost' state
-      const post = meData.me;
-
-      // If the post is found and it has comments
-      if (post && post.comments && post.comments.length > 0) {
-        return post.comments.map((comment) => (
-          <Comment
-            key={comment._id}
-            name={post.username}
-            userTitle={post.activityLevel}
-            postText={comment.content}
-          />
-        ));
-      }
+    if (commentData && commentData.getCommentsByPostId) {
+      return commentData.getCommentsByPostId.map((comment) => (
+        <Comment
+          key={comment._id}
+          name={comment.username}
+          userTitle={comment.activityLevel}
+          postText={comment.content}
+          profilePicture={comment.profilePicture}
+        />
+      ));
     } else {
-      return <p>No comments yet.</p>;
+      return <p>No comments yet</p>
     }
   };
 

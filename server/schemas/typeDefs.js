@@ -86,7 +86,7 @@ const typeDefs = gql`
     allPostIds: [ID]
     postId: Post
     getPosts: [PostPayload]
-    getPostsByUsername(username: String!): [Post]
+    getPostsByUsername(username: String!): [PostPayload]
     getCommentsByPostId(postId: ID): [CommentPayload]
     singleUserPosts(userId: ID): Post
     user(username: String!): User

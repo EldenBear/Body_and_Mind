@@ -59,7 +59,11 @@ const ProfileNav = (props) => {
     if (loading || meData === undefined) {
       return;
     }
-    if (meData?.data.me.username === data?.user.username) {
+
+    console.log(meData);
+    console.log(props.username);
+    console.log(data);
+    if (meData?.data?.me?.username === data?.user.username) {
       setIsReadOnly(false);
     }
   }, [loading, meData, data]);

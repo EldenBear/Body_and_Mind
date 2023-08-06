@@ -154,12 +154,6 @@ const HomePage = () => {
 
   // Submit new comment to add it to the comments array
   async function onSubmitComment() {
-    // const newComment = {
-    //   name: 'no data',
-    //   userTitle: 'no data',
-    //   postText: addPostComment,
-    // };
-
     const { data } = await addComment({
       variables: {
         comment: {
@@ -168,17 +162,24 @@ const HomePage = () => {
       },
     });
 
-    // console.log(`data: ${JSON.stringify(data.addComment.content)}`);
+    const updatedPost = posts.find((post) => post._id === currentPost);
 
-    const post = posts.filter((x) => x.id === currentPost);
+    if (updatedPost) {
+      const updatedComments = updatedPost.comments
+        ? [...updatedPost.comments, data.addComment]
+        : [data.addComment];
+      const updatedPostWithComments = {
+        ...updatedPost,
+        comments: updatedComments,
+      };
 
-    console.log(`post: ${JSON.stringify(post)}`);
-    console.log(`currentPost: ${JSON.stringify(currentPost)}`);
-
-    const newArray = posts.filter((x) => x.id !== currentPost);
-    post[0].comments.push(data.addComment.content);
-    setPosts([...newArray, ...post]);
+      const updatedPosts = posts.map((post) =>
+        post._id === currentPost ? updatedPostWithComments : post
+      );
+      setPosts(updatedPosts);
+    }
   }
+
   /*
 
 

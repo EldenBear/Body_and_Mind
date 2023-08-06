@@ -154,6 +154,7 @@ const resolvers = {
       }
     },
     addBio: async (parent, args, context) => {
+      console.log(args);
       try {
         return User.findOneAndUpdate(
           { _id: context.user._id },

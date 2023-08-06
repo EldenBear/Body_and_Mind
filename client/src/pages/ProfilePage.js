@@ -23,12 +23,12 @@ const ProfilePage = () => {
   const { loading: meLoading, data: meData } = useQuery(GET_ME);
   
   let { id } = useParams();
-  const  { loading: postsLoading, data: postsData } = useQuery(GET_POSTS_BY_USERNAME, {
+  const  { loading: postsLoading, data: postsData, refetch: refetchUserData } = useQuery(GET_POSTS_BY_USERNAME, {
     // pass URL parameter
     variables: { username: id },
   });
 
-  const {loading: commentsLoading, data: commentData, refetch: refetchComments} = useQuery(GET_COMMENTS_BY_POST_ID, {
+  const {loading: commentsLoading, data: commentData} = useQuery(GET_COMMENTS_BY_POST_ID, {
     variables: { postId: currentPost },
   });
 

@@ -17,6 +17,7 @@ import {
   CardHeader,
   Editable,
   EditableInput,
+  EditablePreview,
   EditableTextarea,
   Flex,
   Heading,
@@ -41,9 +42,13 @@ import {
 
 const ProfileNav = (props) => {
   const [isInEditMode, setIsInEditMode] = React.useState(false);
-  const [gender, setGender] = React.useState('Male');
-  const [activity, setActivity] = React.useState('Active');
+  const [gender, setGender] = React.useState(null);
+  const [activity, setActivity] = React.useState(null);
+  const [aboutMe, setAboutMe] = React.useState(null);
+  const [age, setAge] = React.useState(null);
+  const [hobbies, setHobbies] = React.useState(null);
   const [isReadOnly, setIsReadOnly] = React.useState(true);
+  const [profilePicture, setProfilePicture] = React.useState(null);
   const meData = useQuery(GET_ME);
 
   const [addBio] = useMutation(ADD_BIO, {
@@ -60,63 +65,52 @@ const ProfileNav = (props) => {
       return;
     }
 
-    console.log(meData);
-    console.log(props.username);
-    console.log(data);
     if (meData?.data?.me?.username === data?.user.username) {
       setIsReadOnly(false);
     }
+
+    if(data.user){
+      setGender(data?.user.gender);
+      setActivity(data?.user.activityLevel);
+      setProfilePicture(data?.user.profilePicture);
+      setHobbies(data?.user.hobbies);
+      setAboutMe(data?.user.aboutme);
+      setAge(data?.user.age);
+    }
   }, [loading, meData, data]);
 
-  async function onSelectGender(event) {
+  function onSelectGender(event) {
     const newGender = event.target.value;
-
-    try {
-      const { data } = await addBio({
-        variables: {
-          bio: {
-            gender: newGender,
-          },
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-
-    // Update the gender state
     setGender(newGender);
   }
 
-  async function onSelectActivity(event) {
+  function onSelectActivity(event) {
     const newActivity = event.target.value;
-
-    try {
-      const { data } = await addBio({
-        variables: {
-          bio: {
-            activityLevel: newActivity,
-          },
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-
-    // Update the activity state
     setActivity(newActivity);
   }
 
-  async function updateAvatarURL(newURL) {
+  function updateAvatarURL(newURL) {
+    setProfilePicture(newURL);
+  }
+
+  const saveChanges = async () => {
     try {
-      const { data } = await addBio({
+      await addBio({
         variables: {
           bio: {
-            profilePicture: newURL,
+            aboutme: aboutMe,
+            gender: gender,
+            activityLevel: activity,
+            age: age,
+            hobbies: hobbies,
+            profilePicture: profilePicture
           },
         },
+        onCompleted: () => setIsInEditMode(false),
       });
     } catch (err) {
       console.error(err);
+      alert(err);
     }
   }
 
@@ -168,25 +162,9 @@ const ProfileNav = (props) => {
                 textAlign='center'
                 fontSize='2xl'
                 isPreviewFocusable={false}
-                isDisabled={!isInEditMode}
+                isDisabled={true}
                 name='username'
-                onSubmit={async (newValue) => {
-                  try {
-                    const { data } = await addBio({
-                      variables: {
-                        bio: {
-                          username: newValue,
-                        },
-                      },
-                    });
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
               >
-                {/* <EditablePreview className='aboutMePadding' /> */}
-                <EditableInput className='aboutMePadding' />
-                {isInEditMode && <EditableControls />}
               </Editable>
             </Box>
             <Box>
@@ -200,22 +178,10 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 name='aboutme'
-                onSubmit={async (newValue) => {
-                  try {
-                    const { data } = await addBio({
-                      variables: {
-                        bio: {
-                          aboutme: newValue,
-                        },
-                      },
-                    });
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
+                value={aboutMe ?? ""}
+                onChange={(newValue) => setAboutMe(newValue)}
               >
-                {data && data.user && data.user.aboutme}
-                {/* <EditablePreview className='aboutMePadding' /> */}
+                <EditablePreview className='aboutMePadding' />
                 <EditableTextarea className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
               </Editable>
@@ -227,17 +193,19 @@ const ProfileNav = (props) => {
               {isInEditMode && (
                 <Select
                   name='gender'
-                  defaultValue={gender}
+                  defaultValue={null}
+                  value={gender}
                   onChange={onSelectGender}
                 >
+                  <option value={null}>Select...</option>
                   <option value='Male'>Male</option>
                   <option value='Female'>Female</option>
                   <option value='Non-Binary'>Non-Binary</option>
                   <option value='Prefer not to say'>Prefer not to say</option>
                 </Select>
               )}
-              {!isInEditMode && data && data.user && data.user.gender && (
-                <span>{data.user.gender}</span>
+              {!isInEditMode && (
+                <span>{gender}</span>
               )}
             </Box>
             <Box>
@@ -251,23 +219,10 @@ const ProfileNav = (props) => {
                 isPreviewFocusable={false}
                 isDisabled={!isInEditMode}
                 className='aboutMe'
-                onSubmit={async (newValue) => {
-                  try {
-                    const { data: ageInfo } = await addBio({
-                      variables: {
-                        bio: {
-                          age: newValue,
-                        },
-                      },
-                    });
-                    console.log(`age: ${ageInfo}`);
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
-              >
-                {data && data.user && data.user.age}
-                {/* <EditablePreview className='aboutMePadding' /> */}
+                value={age ?? ""}
+                onChange={(newValue) => setAge(newValue)}
+                >  
+                <EditablePreview className='aboutMePadding' />
                 <EditableInput className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
               </Editable>
@@ -279,20 +234,19 @@ const ProfileNav = (props) => {
               {isInEditMode && (
                 <Select
                   name='activityLevel'
-                  defaultValue={activity}
+                  defaultValue={null}
+                  value={activity}
                   onChange={onSelectActivity}
                 >
+                  <option value={null}>Select...</option>
                   <option value='Sedentary'>Sedentary</option>
                   <option value='Active'>Active</option>
                   <option value='Social Active'>Social Active</option>
                   <option value='Very Active'>Very Active</option>
                 </Select>
               )}
-              {!isInEditMode &&
-                data &&
-                data.user &&
-                data.user.activityLevel && (
-                  <span>{data.user.activityLevel}</span>
+              {!isInEditMode && (
+                  <span>{activity}</span>
                 )}
             </Box>
             <Box>
@@ -306,22 +260,10 @@ const ProfileNav = (props) => {
                 isPreviewFocusable={false}
                 isDisabled={!isInEditMode}
                 className='aboutMe'
-                onSubmit={async (newValue) => {
-                  try {
-                    const { data } = await addBio({
-                      variables: {
-                        bio: {
-                          hobbies: newValue,
-                        },
-                      },
-                    });
-                  } catch (err) {
-                    console.error(err);
-                  }
-                }}
+                value={hobbies ?? ""}
+                onChange={(newValue) => setHobbies(newValue)}
               >
-                {data && data.user && data.user.hobbies}
-                {/* <EditablePreview className='aboutMePadding' /> */}
+                <EditablePreview className='aboutMePadding' />
                 <EditableTextarea className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
               </Editable>
@@ -379,7 +321,7 @@ const ProfileNav = (props) => {
               <Button
                 colorScheme='blue'
                 className='editButtons'
-                onClick={() => setIsInEditMode(false)}
+                onClick={saveChanges}
               >
                 Save Changes
               </Button>
@@ -397,7 +339,7 @@ const ProfileNav = (props) => {
               <WrapItem>
                 <Avatar
                   size='2xl'
-                  src={data && data.user && data.user.profilePicture}
+                  src={profilePicture}
                   className='profileAvatarPhoto'
                 />{' '}
               </WrapItem>
@@ -419,7 +361,7 @@ const ProfileNav = (props) => {
               <WrapItem>
                 <Avatar
                   size='2xl'
-                  src={data && data.user && data.user.profilePicture}
+                  src={profilePicture}
                   className='profileAvatarPhoto'
                 />{' '}
               </WrapItem>
@@ -435,7 +377,7 @@ const ProfileNav = (props) => {
                 <Button
                   colorScheme='blue'
                   className='editButtons'
-                  onClick={() => setIsInEditMode(false)}
+                  onClick={saveChanges}
                 >
                   Save Changes
                 </Button>

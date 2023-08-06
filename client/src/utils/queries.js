@@ -24,11 +24,19 @@ export const ALL_POST_IDS = gql`
     allPostIds
   }
 `;
-// Might not need
 export const GET_POST_ID = gql`
-  query postId($id: Post) {
-    postId(id: $id) {
+  query GetPostById($postId: ID!) {
+    getPostById(_id: $postId) {
       _id
+      postText
+      imageURL
+      comments {
+        _id
+        content
+        createdAt
+        username
+        activityLevel
+      }
     }
   }
 `;

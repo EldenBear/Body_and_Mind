@@ -21,9 +21,9 @@ const resolvers = {
         throw new Error('Failed to fetch post ids');
       }
     },
-    postId: async (_, __, context) => {
-      const user = await User.findOne({ _id: context.user._id });
-      
+    getPostById: async (_, { id }) => {
+      const post = await Post.findById(id);
+      return post;
     },
 
     getPosts: async () => {

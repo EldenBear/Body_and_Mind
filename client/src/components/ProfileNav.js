@@ -69,7 +69,7 @@ const ProfileNav = (props) => {
       setIsReadOnly(false);
     }
 
-    if(data.user){
+    if (data.user) {
       setGender(data?.user.gender);
       setActivity(data?.user.activityLevel);
       setProfilePicture(data?.user.profilePicture);
@@ -103,7 +103,7 @@ const ProfileNav = (props) => {
             activityLevel: activity,
             age: age,
             hobbies: hobbies,
-            profilePicture: profilePicture
+            profilePicture: profilePicture,
           },
         },
         onCompleted: () => setIsInEditMode(false),
@@ -112,7 +112,7 @@ const ProfileNav = (props) => {
       console.error(err);
       alert(err);
     }
-  }
+  };
 
   const onClickMenuItem = (path) => {
     if (path === '/') {
@@ -164,8 +164,7 @@ const ProfileNav = (props) => {
                 isPreviewFocusable={false}
                 isDisabled={true}
                 name='username'
-              >
-              </Editable>
+              ></Editable>
             </Box>
             <Box>
               <Heading size='xs' textTransform='uppercase'>
@@ -178,7 +177,7 @@ const ProfileNav = (props) => {
                 isDisabled={!isInEditMode}
                 className='aboutMe'
                 name='aboutme'
-                value={aboutMe ?? ""}
+                value={aboutMe ?? ''}
                 onChange={(newValue) => setAboutMe(newValue)}
               >
                 <EditablePreview className='aboutMePadding' />
@@ -204,9 +203,7 @@ const ProfileNav = (props) => {
                   <option value='Prefer not to say'>Prefer not to say</option>
                 </Select>
               )}
-              {!isInEditMode && (
-                <span>{gender}</span>
-              )}
+              {!isInEditMode && <span>{gender}</span>}
             </Box>
             <Box>
               <Heading size='xs' textTransform='uppercase'>
@@ -219,9 +216,9 @@ const ProfileNav = (props) => {
                 isPreviewFocusable={false}
                 isDisabled={!isInEditMode}
                 className='aboutMe'
-                value={age ?? ""}
+                value={age ?? ''}
                 onChange={(newValue) => setAge(newValue)}
-                >  
+              >
                 <EditablePreview className='aboutMePadding' />
                 <EditableInput className='aboutMePadding' />
                 {isInEditMode && <EditableControls />}
@@ -245,9 +242,7 @@ const ProfileNav = (props) => {
                   <option value='Very Active'>Very Active</option>
                 </Select>
               )}
-              {!isInEditMode && (
-                  <span>{activity}</span>
-                )}
+              {!isInEditMode && <span>{activity}</span>}
             </Box>
             <Box>
               <Heading size='xs' textTransform='uppercase'>
@@ -260,7 +255,7 @@ const ProfileNav = (props) => {
                 isPreviewFocusable={false}
                 isDisabled={!isInEditMode}
                 className='aboutMe'
-                value={hobbies ?? ""}
+                value={hobbies ?? ''}
                 onChange={(newValue) => setHobbies(newValue)}
               >
                 <EditablePreview className='aboutMePadding' />
@@ -354,7 +349,7 @@ const ProfileNav = (props) => {
       <div class='profileSidenav'>
         <div className='profilePic'>
           <h1 className='profileHomeHeader'>
-            <a href='home'>Body and Mind</a>
+            <a href='/home'>Body and Mind</a>
           </h1>
           <div className='aboutDiv'>
             <div className='profilePicDiv'>

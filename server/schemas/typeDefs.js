@@ -12,8 +12,7 @@ const typeDefs = gql`
     gender: String
     profilePicture: String
     activityLevel: String
-    postId: ID
-    comments: [Comment]
+    posts: [ID]
   }
 
   type Post {
@@ -21,6 +20,18 @@ const typeDefs = gql`
     userId: ID
     postText: String
     imageURL: String
+    comments: [ID]
+  }
+
+  type PostPayload {
+    _id: ID!
+    userId: ID
+    username: String
+    profilePicture: String
+    activityLevel: String
+    postText: String
+    imageURL: String
+    comments: [ID]
   }
 
   input PostInput {
@@ -32,6 +43,7 @@ const typeDefs = gql`
   type Comment {
     content: String!
     createdAt: String
+    userId: ID
   }
 
   input CommentInput {
@@ -62,11 +74,20 @@ const typeDefs = gql`
     user: User
   }
 
+  type CommentPayload {
+    content: String!
+    username: String!
+    profilePicture: String
+    activityLevel: String
+  }
+
   type Query {
     me: User
     allPostIds: [ID]
     postId: Post
-    getPosts: [Post]
+    getPosts: [PostPayload]
+    getPostsByUsername(username: String!): [PostPayload]
+    getCommentsByPostId(postId: ID): [CommentPayload]
     singleUserPosts(userId: ID): Post
     user(username: String!): User
     exercises: [Exercise]!
@@ -77,7 +98,7 @@ const typeDefs = gql`
     register(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
     addBio(bio: BioInput!): User
-    addComment(comment: CommentInput): Comment
+    addComment(comment: CommentInput, postId: ID): Comment
     addPost(post: PostInput): Post
   }
 `;

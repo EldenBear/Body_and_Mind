@@ -1,5 +1,4 @@
-const { User, Post } = require('../models');
-const commentSchema = require('../models/commentSchema');
+const { User, Post, Comment } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -7,7 +6,7 @@ const resolvers = {
   Query: {
     me: async (_, __, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('comments');
+        return User.findOne({ _id: context.user._id });
       } else {
         throw new AuthenticationError('You need to be logged in');
       }
@@ -27,13 +26,103 @@ const resolvers = {
     },
 
     getPosts: async () => {
-      return Post.find();
+      const posts = await Post.find();
+      const userData = await User.find();
+
+      const postPayload = [];
+      posts.forEach(post => {
+        const user = userData.filter(x => post.userId.equals(x._id))[0];
+
+        const payload = {
+          _id: post._id,
+          userId: post.userId,
+          username: user.username,
+          profilePicture: user.profilePicture,
+          activityLevel: user.activityLevel,
+          postText: post.postText,
+          imageURL: post.imageURL,
+          comments: post.comments
+        };
+
+        postPayload.push(payload);
+      });
+
+      return postPayload;
+    },
+    getPostsByUsername: async (parent, { username }) => {
+      try {
+
+        const result = await User.findOne({username: username} );
+        const posts = await Post.find();
+  
+        const postPayload = [];
+        result.posts.forEach(postId => {
+          const post = posts.filter(x => x._id.equals(postId))[0];
+  
+          const payload = {
+            _id: post._id,
+            userId: post.userId,
+            username: result.username,
+            profilePicture: result.profilePicture,
+            activityLevel: result.activityLevel,
+            postText: post.postText,
+            imageURL: post.imageURL,
+            comments: post.comments
+          };
+  
+          postPayload.push(payload);
+        });
+  
+        return postPayload;
+      } catch (err){
+        console.error(err);
+      }
+    },
+    getCommentsByPostId: async (parent, {postId}) => {
+      if(postId == null){
+        return [];
+      }
+
+      try {
+        const post = await Post.findOne({_id: postId});
+        if(!post){
+          return [];
+        }
+
+        if(!post.comments) {
+          return [];
+        }
+
+        const commentsData = await Comment.find();
+        const userData = await User.find();
+        const comments = commentsData.filter(x => post.comments.includes(x.id));
+        const commentPayload = [];
+        comments.forEach(comment => {
+          const user = userData.filter(x => comment.userId.equals(x._id))[0];
+
+          const payload = {
+            _id: comment._id,
+            content: comment.content,
+            username: user.username,
+            profilePicture: user.profilePicture,
+            activityLevel: user.activityLevel
+          };
+
+          commentPayload.push(payload);
+        })
+
+      return commentPayload;
+      } catch(err) {
+        console.log(err);
+      }
+      
+
     },
     singleUserPosts: async (parent, { userId }) => {
       return Post.findOne({ _id: userId });
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username }).populate('comments');
+      return User.findOne({ username });
     },
   },
 
@@ -65,8 +154,8 @@ const resolvers = {
       }
     },
     addBio: async (parent, args, context) => {
+      console.log(args);
       try {
-        console.log('%c' + 'Args: ', 'color: red' + args);
         return User.findOneAndUpdate(
           { _id: context.user._id },
           {
@@ -88,41 +177,33 @@ const resolvers = {
       }
     },
     addComment: async (parents, args, context) => {
+      console.log("???");
       try {
-        const user = await User.findById(context.user._id);
-        if (!user) {
-          throw new Error('User not found');
+        const post = await Post.findOne({_id: args.postId});
+        if (!post) {
+          throw new Error('Post not found');
         }
 
-        console.log(`user:: ${user}`);
-
-        console.log('content: ' + args.comment.content);
-
-        const newComment = {
+        console.log(context.user);
+        const newComment = await Comment.create({
           content: args.comment.content,
-        };
+          userId: context.user._id,
+        })
 
-        console.log(`newComment: ${JSON.stringify(newComment)}`);
-
-        if (user && user.comments) {
-          console.log(`user.comments: ${user.comments}`);
-          user.comments.push(newComment);
-          await user.save();
-          return newComment;
-        } else {
-          throw new Error('User or user comments not found');
-        }
+        post.comments.push(newComment._id);
+        await post.save();
+        return newComment;
       } catch (err) {
         console.error(err);
       }
     },
     addPost: async (_, args, context) => {
+      console.log("adding");
       // Check if the user is logged in
       if (!context.user) {
         throw new AuthenticationError('You need to be logged in');
       }
 
-      console.log(`args: ${JSON.stringify(args)}`);
       // Get the logged-in user's ID from the context
       const userId = context.user._id;
 
@@ -131,7 +212,14 @@ const resolvers = {
           userId: userId,
           postText: args.post.postText,
           imageURL: args.post.imageURL,
+          comments: [],
         });
+
+        // Get the user and add the post to the user
+        const user = await User.findById(userId);
+        user.posts.push(newPost);
+        user.save();
+
         return newPost;
       } catch (err) {
         console.error(err);

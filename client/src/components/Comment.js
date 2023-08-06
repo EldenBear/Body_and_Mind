@@ -22,7 +22,7 @@ const Comment = (props) => {
       <CardHeader>
         <Flex spacing='4'>
           <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-            <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
+            <Avatar src={props.profilePicture} />
 
             <Box>
               <Heading
@@ -49,9 +49,6 @@ const Comment = (props) => {
           },
         }}
       >
-        <Button flex='1' variant='ghost'>
-          &#128170; Like
-        </Button>
       </CardFooter>
     </Card>
   );

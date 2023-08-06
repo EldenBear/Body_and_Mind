@@ -24,7 +24,7 @@ const Post = (props) => {
       <CardHeader>
         <Flex spacing="4">
           <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
+            <Avatar src={props.profilePicture} />
 
             <Box>
               <Heading size="md" onClick={onClickUserName} className="userTitle">{props.name}</Heading>
@@ -52,19 +52,6 @@ const Post = (props) => {
           },
         }}
       >
-        <Button flex="1" variant="ghost">
-          &#128170; Like
-          <AvatarGroup size="sm" max={3}>
-            <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
-            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-            <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-            <Avatar
-              name="Prosper Otemuyiwa"
-              src="https://bit.ly/prosper-baba"
-            />
-            <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-          </AvatarGroup>
-        </Button>
         <Button flex="1" variant="ghost" onClick={props.onClickComment}>
           &#129504; Comment
         </Button>

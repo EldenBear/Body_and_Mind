@@ -11,10 +11,6 @@ export const GET_ME = gql`
       gender
       profilePicture
       activityLevel
-      comments {
-        content
-        createdAt
-      }
     }
   }
 `;
@@ -36,8 +32,36 @@ export const GET_POST_ID = gql`
 export const GET_POSTS = gql`
   query getPosts {
     getPosts {
+      _id
       postText
       imageURL
+      activityLevel
+      username
+      profilePicture
+    }
+  }
+`;
+
+export const GET_POSTS_BY_USERNAME = gql`
+  query getPostsByUsername($username: String!) {
+    getPostsByUsername(username: $username) {
+      _id
+      postText
+      imageURL
+      activityLevel
+      username
+      profilePicture
+    }
+  }
+`;
+
+export const GET_COMMENTS_BY_POST_ID = gql`
+  query getCommentsByPostId($postId: ID){
+    getCommentsByPostId(postId: $postId){
+      content
+      username
+      profilePicture
+      activityLevel
     }
   }
 `;
@@ -62,30 +86,6 @@ export const QUERY_USER = gql`
       gender
       profilePicture
       activityLevel
-      comments {
-        content
-        createdAt
-      }
     }
   }
 `;
-
-//get all comments
-// export const GET_ALL_COMMENTS = gql`
-//   query getAllComments {
-//     comments {
-//       content
-//       createdAt
-//     }
-//   }
-// `;
-
-//get comments by userId
-// export const GET_COMMENTS_BY_USER_ID = gql`
-//   query getCommentsByUserId($userId: ID!) {
-//     commentsByUser(userId: $userId) {
-//       content
-//       createdAt
-//     }
-//   }
-// `;

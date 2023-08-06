@@ -131,7 +131,7 @@ menuItem {
   backdrop-filter: blur(5px);
 }
 
-.chakra-modal__content {
+.supportModal {
   background-color: white;
   border-radius: 8px;
   padding: 20px;

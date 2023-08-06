@@ -10,9 +10,6 @@ import {
     Text,
 } from '@chakra-ui/react';
 
-
-
-
 const Workout = (props) => {
     return (
         <Card maxW="2xl" className="workoutInfo">

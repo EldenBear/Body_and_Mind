@@ -8,14 +8,7 @@
     "gender": "male",
     "profilePicture": "https://example.com/profiles/john.jpg",
     "activityLevel": "active",
-    "comments": [
-      {
-        "content": "Great post!"
-      },
-      {
-        "content": "Interesting article."
-      }
-    ]
+    "posts": []
   },
   {
     "username": "Jane Smitheee",
@@ -25,10 +18,6 @@
     "gender": "female",
     "profilePicture": "https://example.com/profiles/jane.jpg",
     "activityLevel": "active",
-    "comments": [
-      {
-        "content": "Thanks for sharing!"
-      }
-    ]
+    "posts": []
   }
 ]

@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const ageValidator = require('../utils/ageValidator');
-const commentSchema = require('./commentSchema');
 
 const userSchema = new Schema({
   username: {
@@ -38,11 +37,10 @@ const userSchema = new Schema({
   activityLevel: {
     type: String,
   },
-  postId: {
+  posts: [{
     type: Schema.Types.ObjectId,
-    ref: 'Post',
-  },
-  comments: [commentSchema],
+    ref: "Post"
+  }],
 });
 
 // Mongoose middleware that will hash the user password

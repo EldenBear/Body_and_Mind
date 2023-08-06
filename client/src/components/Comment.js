@@ -49,9 +49,6 @@ const Comment = (props) => {
           },
         }}
       >
-        <Button flex='1' variant='ghost'>
-          &#128170; Like
-        </Button>
       </CardFooter>
     </Card>
   );

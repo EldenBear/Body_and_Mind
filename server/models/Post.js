@@ -14,6 +14,12 @@ const postSchema = new Schema({
   imageURL: {
     type: String,
   },
+  comments: [
+    { 
+      type: Schema.Types.ObjectId, 
+      ref: 'Comment' 
+    }
+  ],
 });
 
 const Post = model('Post', postSchema);

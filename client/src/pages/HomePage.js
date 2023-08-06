@@ -3,7 +3,7 @@ import Post from '../components/Post';
 import Comment from '../components/Comment';
 import Navigation from '../components/Navigation';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_ME, GET_POSTS, GET_POST_ID } from '../utils/queries';
+import { GET_COMMENTS_BY_POST_ID, GET_ME, GET_POSTS, GET_POST_ID } from '../utils/queries';
 import { ADD_COMMENT, ADD_POST } from '../utils/mutations';
 import '../components/HomePage.css';
 import {
@@ -32,6 +32,8 @@ const HomePage = () => {
 
   // Query 'getPostId' data from the server
   const { loading: postIdLoading, data: postIdData } = useQuery(GET_POSTS);
+
+
 
   // Send the data to GraphQL
   const [addPost] = useMutation(ADD_POST);
@@ -62,10 +64,14 @@ const HomePage = () => {
 
   // State for adding a new comment
   const [addPostComment, setAddPostComment] = React.useState('');
-  const [currentPost, setCurrentPost] = React.useState(0);
+  const [currentPost, setCurrentPost] = React.useState(null);
 
   // UseDisclosure hook to manage the drawer state
   const { isOpen, onOpen, onClose, firstField } = useDisclosure();
+
+  const {loading: commentsLoading, data: commentData, refetch: refetchComments} = useQuery(GET_COMMENTS_BY_POST_ID, {
+    variables: { postId: currentPost },
+  });
 
   // Constants for drawer types
   const commentDrawer = 'comment';
@@ -91,15 +97,12 @@ const HomePage = () => {
     }
     window.addEventListener('resize', handleResize);
   });
-
+  
   // Function to open the drawer based on its type (comment or post)
   function openDrawer(drawer, postId) {
     setCurrentDrawer(drawer);
     if (drawer === commentDrawer) {
-      console.log(`postIdData: ${JSON.stringify(postIdData)}`);
       setCurrentPost(postId);
-      // Need _id of Post model inside setCurrentPost()
-      // or need to make postId in Post model which grabs the input from here
     }
     onOpen();
   }
@@ -133,21 +136,6 @@ const HomePage = () => {
       },
     });
 
-    /*
-    {
-      "data": {
-        "addPost": {
-          "postText": "Google",
-          "imageURL": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z29vZ2xlJTIwbG9nb3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-        }
-      }
-    }
-*/
-
-    console.log(`postId: ${posts.length + 1}`);
-    console.log(`postText: ${addPostDesc}`);
-    console.log(`imageURL: ${addPostImage}`);
-
     setPosts([...posts, newPost]);
     onClose();
   }
@@ -159,37 +147,11 @@ const HomePage = () => {
         comment: {
           content: addPostComment,
         },
+        postId: currentPost
       },
+      onCompleted: refetchComments,
     });
-
-    const updatedPost = posts.find((post) => post._id === currentPost);
-
-    if (updatedPost) {
-      const updatedComments = updatedPost.comments
-        ? [...updatedPost.comments, data.addComment]
-        : [data.addComment];
-      const updatedPostWithComments = {
-        ...updatedPost,
-        comments: updatedComments,
-      };
-
-      const updatedPosts = posts.map((post) =>
-        post._id === currentPost ? updatedPostWithComments : post
-      );
-      setPosts(updatedPosts);
-    }
   }
-
-  /*
-
-
-  const { loading: meLoading, data: meData } = useQuery(GET_ME);
-
-  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
-
-
-
-  */
 
   // Render all posts
   const renderPosts = () => {
@@ -197,11 +159,12 @@ const HomePage = () => {
       return (
         <Post
           key={post._id}
-          name={post.name}
-          userTitle={post.userTitle}
+          name={post.username}
+          userTitle={post.activityLevel}
           imageURL={post.imageURL}
           postText={post.postText}
-          onClickComment={() => openDrawer(commentDrawer, post.id)}
+          profilePicture={post.profilePicture}
+          onClickComment={() => openDrawer(commentDrawer, post._id)}
         ></Post>
       );
     });
@@ -213,18 +176,24 @@ const HomePage = () => {
       return <p>Loading comments...</p>;
     }
 
+    if(commentsLoading) {
+      return <p>Comments are loading</p>;
+    }
+
     if (meData?.me) {
       // Find the post based on the 'currentPost' state
       const post = meData.me;
 
       // If the post is found and it has comments
-      if (post && post.comments && post.comments.length > 0) {
-        return post.comments.map((comment) => (
+      if (commentData) {
+        console.log(commentData);
+        return commentData.getCommentsByPostId.map((comment) => (
           <Comment
             key={comment._id}
-            name={post.username}
-            userTitle={post.activityLevel}
+            name={comment.username}
+            userTitle={comment.activityLevel}
             postText={comment.content}
+            profilePicture={comment.profilePicture}
           />
         ));
       }

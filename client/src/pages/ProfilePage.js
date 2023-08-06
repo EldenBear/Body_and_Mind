@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_ME, GET_POSTS } from '../utils/queries';
+import { GET_ME, GET_POSTS_BY_USERNAME } from '../utils/queries';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 import ProfileNav from '../components/ProfileNav';
@@ -18,10 +18,16 @@ import {
 
 const ProfilePage = () => {
   const { loading: meLoading, data: meData } = useQuery(GET_ME);
-  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
+  
+  let { id } = useParams();
+  const  { loading: postsLoading, data: postsData } = useQuery(GET_POSTS_BY_USERNAME, {
+    // pass URL parameter
+    variables: { username: id },
+  });
+
+
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 1000);
   const [currentPost, setCurrentPost] = React.useState(0);
-  let { id } = useParams();
   const [posts, setPosts] = React.useState([]);
   React.useEffect(() => {
     if (postsData?.getPosts) {

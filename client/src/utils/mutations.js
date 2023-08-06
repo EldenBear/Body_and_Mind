@@ -34,8 +34,8 @@ export const ADD_BIO = gql`
 `;
 
 export const ADD_COMMENT = gql`
-  mutation AddComment($comment: CommentInput) {
-    addComment(comment: $comment) {
+  mutation AddComment($comment: CommentInput, $postId: ID) {
+    addComment(comment: $comment, postId: $postId) {
       content
     }
   }
@@ -49,22 +49,3 @@ export const ADD_POST = gql`
     }
   }
 `;
-
-//adding post
-// export const ADD_POST = gql`
-//   mutation AddPost($title: String!, $description: String!, $image: String!) {
-//     addPost(title: $title, description: $description, image: $image) {
-//       title
-//       description
-//       image
-//     }
-//   }
-// `;
-
-//removing post
-// export const DELETE_POST = gql`
-//   mutation DeletePost($postId: ID!) {
-//     deletePost(postId: $postId) {
-//     }
-//   }
-// `;

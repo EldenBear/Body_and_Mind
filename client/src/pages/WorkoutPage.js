@@ -18,6 +18,7 @@ const WorkoutPage = () => {
   const [avatarURL, setAvatarURL] = React.useState('https://bit.ly/broken-link');
   const [workouts, setWorkouts] = React.useState([]);
   const [search, setSearch] = React.useState("");
+  const [hasSearched, setHasSearched] = React.useState(false);
 
   React.useEffect( () => {
     if (loading) {
@@ -45,6 +46,7 @@ const WorkoutPage = () => {
       });
       const result = await response.json();
       setWorkouts(result);
+      setHasSearched(true);
     }
     function onSearchWorkouts(){
       getworkouts(search);
@@ -55,6 +57,10 @@ const WorkoutPage = () => {
     };
 
     const renderWorkouts = () => {
+      if(!hasSearched) {
+        return <></>;
+      }
+
       if (workouts.length === 0 ) {
         return (
           <div>

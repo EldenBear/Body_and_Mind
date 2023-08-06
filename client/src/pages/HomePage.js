@@ -96,7 +96,7 @@ const HomePage = () => {
   function openDrawer(drawer, postId) {
     setCurrentDrawer(drawer);
     if (drawer === commentDrawer) {
-      console.log(`postIdData: ${JSON.stringify(postIdData)}`);
+      // console.log(`postIdData: ${JSON.stringify(postIdData)}`);
       setCurrentPost(postId);
       // Need _id of Post model inside setCurrentPost()
       // or need to make postId in Post model which grabs the input from here
@@ -119,36 +119,22 @@ const HomePage = () => {
 
   // Submit new post to add it to the posts array
   async function onSubmit() {
-    const newPost = {
-      postText: addPostDesc,
-      imageURL: addPostImage,
-    };
-
     const { data } = await addPost({
       variables: {
         post: {
+          postId: posts.length + 1,
           postText: addPostDesc,
           imageURL: addPostImage,
         },
       },
     });
 
-    /*
-    {
-      "data": {
-        "addPost": {
-          "postText": "Google",
-          "imageURL": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z29vZ2xlJTIwbG9nb3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-        }
-      }
-    }
-*/
-
+    console.log(`data: ${JSON.stringify(data.addPost)}`);
     console.log(`postId: ${posts.length + 1}`);
     console.log(`postText: ${addPostDesc}`);
     console.log(`imageURL: ${addPostImage}`);
 
-    setPosts([...posts, newPost]);
+    setPosts([data.addPost]);
     onClose();
   }
 

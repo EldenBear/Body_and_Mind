@@ -18,6 +18,7 @@ const typeDefs = gql`
 
   type Post {
     _id: ID!
+    postId: Int
     userId: ID
     postText: String
     imageURL: String
@@ -25,6 +26,7 @@ const typeDefs = gql`
 
   input PostInput {
     userId: ID
+    postId: Int
     postText: String
     imageURL: String
   }

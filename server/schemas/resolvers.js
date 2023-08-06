@@ -23,7 +23,6 @@ const resolvers = {
     },
     postId: async (_, __, context) => {
       const user = await User.findOne({ _id: context.user._id });
-      
     },
 
     getPosts: async () => {
@@ -129,6 +128,7 @@ const resolvers = {
       try {
         const newPost = await Post.create({
           userId: userId,
+          postId: args.post.postId,
           postText: args.post.postText,
           imageURL: args.post.imageURL,
         });

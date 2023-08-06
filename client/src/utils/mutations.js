@@ -44,8 +44,11 @@ export const ADD_COMMENT = gql`
 export const ADD_POST = gql`
   mutation AddPost($post: PostInput) {
     addPost(post: $post) {
+      _id
+      postId
       postText
       imageURL
+      userId
     }
   }
 `;

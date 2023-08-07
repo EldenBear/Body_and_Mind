@@ -50,7 +50,7 @@ const Navigation = (props) => {
                   onClickMenuItem(`profile/${props.data.me.username}`)
                 }
               >
-                <a href='profile' className='menuItem'>
+                <a href={`profile/${props.data.me.username}`} className='menuItem'>
                   Profile
                 </a>
               </MenuItem>

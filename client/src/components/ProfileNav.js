@@ -285,7 +285,7 @@ const ProfileNav = (props) => {
                 variant='outline'
               />
               <MenuList>
-                <MenuItem onClick={() => onClickMenuItem('home')}>
+                <MenuItem onClick={() => onClickMenuItem('/home')}>
                   Home
                 </MenuItem>
                 <MenuItem

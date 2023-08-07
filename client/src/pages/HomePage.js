@@ -28,7 +28,7 @@ const HomePage = () => {
   const { loading: meLoading, data: meData } = useQuery(GET_ME);
 
   // Query 'getPosts' data from the server
-  const { loading: postsLoading, data: postsData } = useQuery(GET_POSTS);
+  const { loading: postsLoading, data: postsData, refetch: postRefresh } = useQuery(GET_POSTS);
 
   // Query 'getPostId' data from the server
   const { loading: postIdLoading, data: postIdData } = useQuery(GET_POSTS);
@@ -134,9 +134,8 @@ const HomePage = () => {
           imageURL: addPostImage,
         },
       },
+      onCompleted: postRefresh,
     });
-
-    setPosts([...posts, newPost]);
     onClose();
   }
 

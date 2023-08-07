@@ -1,5 +1,9 @@
 # Body_and_Mind
 
+![Screenshot of homepage](./client/public/images/homepage.png)
+
+![Screenshot of workout](./client/public/images/workout.png)
+
 A Project 3 Development: 
 - Welcome to the "Body and Mind" - A revolutionary wellness blog application designed to empower individuals on their journey towars holistic wellbeing, drawing inspiration from the WARIOR MONK MENTALITY. This application is a digital sanctuary where users can explore, learn and engage with content that nourishes both their physical bodies and their inner selves. "Body and Mind" is centered around the idea that true wellness encompasses the harmony of body, mind and spirit and recognizes the profound impact of the environment on an indivudal's overall wellbeing. 
 
